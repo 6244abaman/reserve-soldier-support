@@ -133,7 +133,7 @@ test("phone numbers are cleaned up the same way every time", () => {
   assert.strictEqual(normalizePhone(undefined), null);
 });
 
-test("app/js/schema.js matches schema/recovery-profile.json (run npm run build:schema if this fails)", () => {
+test("app/js/schema.js matches schema/recovery-profile.json (run npm run build:data if this fails)", () => {
   const original = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "schema", "recovery-profile.json"), "utf8"));
   assert.deepStrictEqual(schema, original);
 });

@@ -1,7 +1,7 @@
-// GENERATED from schema/recovery-profile.json by scripts/build-schema.js.
-// Do not edit by hand. Change the schema file, then run: npm run build:schema
+// GENERATED from schema/recovery-profile.json by scripts/build-data.js.
+// Do not edit by hand. Change schema/recovery-profile.json, then run: npm run build:data
 (function (root) {
-  var schema = {
+  var data = {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Momentum Recovery Profile",
     "type": "object",
@@ -626,6 +626,6 @@
       }
     }
   };
-  if (typeof module === "object" && module.exports) module.exports = schema;
-  else root.MomentumProfileSchema = schema;
+  if (typeof module === "object" && module.exports) module.exports = data;
+  else root.MomentumProfileSchema = data;
 })(this);
