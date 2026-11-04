@@ -23,11 +23,18 @@ function send(res, status, body, headers) {
   res.end(JSON.stringify(body));
 }
 
-// ALLOWED_ORIGINS is a comma-separated list. Render passes the app's address
-// without "https://", so a bare host name is read as https://<host>.
+// ALLOWED_ORIGINS is a comma-separated list of the app's web addresses.
+// Render's Blueprint passes only the service's short name (like
+// "rss-app-2gwd"), so a name without a dot is read as <name>.onrender.com,
+// and an address without "https://" gets it.
 function allowedOrigins() {
   return (process.env.ALLOWED_ORIGINS || "").split(",").map((s) => s.trim()).filter(Boolean)
-    .map((s) => (s.indexOf("://") === -1 ? "https://" + s : s).replace(/\/$/, ""));
+    .map((s) => {
+      let origin = s.indexOf("://") === -1 ? "https://" + s : s;
+      origin = origin.replace(/\/+$/, "");
+      const host = origin.split("://")[1];
+      return host.indexOf(".") === -1 ? origin + ".onrender.com" : origin;
+    });
 }
 
 function corsHeaders(req) {

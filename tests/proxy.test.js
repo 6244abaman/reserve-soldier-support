@@ -185,6 +185,20 @@ test("without an API key the proxy says it is not set up, instead of crashing", 
   }
 });
 
+test("Render's short service name counts as its onrender.com address", async () => {
+  process.env.ALLOWED_ORIGINS = "rss-app-2gwd";
+  try {
+    await withServer({ client: fakeClient() }, async (base) => {
+      const ok = await post(base, request(), { Origin: "https://rss-app-2gwd.onrender.com" });
+      assert.strictEqual(ok.headers.get("access-control-allow-origin"), "https://rss-app-2gwd.onrender.com");
+      const other = await post(base, request(), { Origin: "https://rss-app-2gwd.evil.example" });
+      assert.strictEqual(other.headers.get("access-control-allow-origin"), null);
+    });
+  } finally {
+    delete process.env.ALLOWED_ORIGINS;
+  }
+});
+
 test("a bare host name from Render counts as its https address", async () => {
   process.env.ALLOWED_ORIGINS = "momentum-app-x1y2.onrender.com";
   try {

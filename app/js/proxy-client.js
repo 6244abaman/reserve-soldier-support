@@ -4,7 +4,7 @@
 //   { kind: "reply", reply, escalation }    a plain text answer
 //   { kind: "handoff", level, label }       the shared safety check found Level 1 or 2
 //   { kind: "refused" }                     Claude declined
-//   { kind: "error", reason }               notConnected, offline, busy, tooMany, incomplete, other
+//   { kind: "error", reason }               notConnected, offline, unreachable, busy, tooMany, incomplete, other
 (function (root) {
   "use strict";
 
@@ -49,7 +49,10 @@
         return { kind: "error", reason: "other" };
       });
     }).catch(function () {
-      return { kind: "error", reason: "offline" };
+      // The browser gives the same error for "no internet" and "the server
+      // refused this app", so only blame the internet when the phone is offline.
+      var online = typeof navigator === "undefined" || navigator.onLine !== false;
+      return { kind: "error", reason: online ? "unreachable" : "offline" };
     }).then(function (out) {
       if (timer) clearTimeout(timer);
       return out;

@@ -245,6 +245,7 @@ window.MOMENTUM_I18N.en = {
 
   "ai.loading": "One moment, going through your answers. This can take up to a minute.",
   "ai.err.notConnected": "The connection to the assistant isn't set up yet.",
+  "ai.err.unreachable": "The app couldn't reach the assistant's server. Please try again in a moment. If it keeps happening, the server settings need a check.",
   "ai.err.busy": "The assistant is busy right now. Please try again in a minute.",
   "ai.err.offline": "No internet connection, or the server isn't answering. Please try again.",
   "ai.err.tooMany": "Lots of requests in a short time. Please try again in a few minutes.",
