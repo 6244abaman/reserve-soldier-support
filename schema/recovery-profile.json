@@ -237,6 +237,37 @@
               "results": { "type": "string" }
             }
           },
+          "topicWork": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "topic": {
+                  "enum": [
+                    "pricing", "cash_flow_debt", "customer_acquisition", "customer_followup",
+                    "benefits_grants", "staff", "time_capacity"
+                  ]
+                },
+                "date": { "type": "string", "format": "date" },
+                "summary": { "type": "string" },
+                "actions": {
+                  "type": "array",
+                  "maxItems": 3,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "action": { "type": "string" },
+                      "dueDate": { "type": "string", "format": "date" },
+                      "status": { "enum": ["not_started", "in_progress", "done", "blocked", "dropped"] },
+                      "note": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "followUpLog": {
             "type": "array",
             "items": {
