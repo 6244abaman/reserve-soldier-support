@@ -1,0 +1,29 @@
+# Render Blueprint: sets up both Momentum services in one go.
+# On Render: New > Blueprint > choose this repository.
+# Render asks for ANTHROPIC_API_KEY once; paste it there, never in the code or the chat.
+services:
+  # The proxy: the only place the Claude API key lives.
+  - type: web
+    name: momentum-proxy
+    runtime: node
+    plan: free
+    branch: first-build          # switch to main once the build is approved
+    buildCommand: npm install --prefix proxy
+    startCommand: node proxy/server.js
+    healthCheckPath: /health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false              # Render asks you for it; it is never stored in this file
+      - key: ALLOWED_ORIGINS     # only the app's own web address may call the proxy
+        fromService:
+          type: web
+          name: momentum-app
+          property: host
+
+  # The app itself (plain HTML, CSS, and JavaScript from the app/ folder).
+  - type: web
+    name: momentum-app
+    runtime: static
+    branch: first-build
+    buildCommand: echo "No build step"
+    staticPublishPath: ./app

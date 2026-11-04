@@ -1,0 +1,11 @@
+{
+  "name": "momentum-proxy-v2",
+  "private": true,
+  "description": "Momentum proxy: loads an agent's prompt file, adds the profile and sector context, runs the shared safety check, and calls the Claude API. The API key stays on the server.",
+  "main": "server.js",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.137.0"
+  }
+}
