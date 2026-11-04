@@ -32,13 +32,13 @@
 
   // ---------- shared conversation loop ----------
 
-  // spec: { agent, task, businessId, firstMessage, title, render(result), question,
+  // spec: { agent, task, businessId, firstMessage (or messages), title, render(result), question,
   //         confirmKey, changeKey, apply(profile, result) -> { ok, profile } }
   // ctx:  { mount, t, lang, store, profile, onDone(profile), onBack }
   function converse(ctx, spec) {
     var t = ctx.t;
     var profile = ctx.profile;
-    var messages = [{ role: "user", content: spec.firstMessage }];
+    var messages = spec.messages ? spec.messages.slice() : [{ role: "user", content: spec.firstMessage }];
 
     function screen(children) {
       ctx.mount.textContent = "";
@@ -224,7 +224,10 @@
       var due = formatDate(a.dueDate, ctx.lang());
       return {
         action: a,
-        read: function () { return { ref: { businessId: a.businessId, priority: a.priority, index: a.index }, action: a.action, status: picked, note: note.value.trim() }; },
+        read: function () {
+          return { ref: { businessId: a.businessId, source: a.source, priority: a.priority, topic: a.topic, index: a.index },
+            action: a.action, status: picked, note: note.value.trim() };
+        },
         node: el("li", { class: "checkin-row" },
           el("p", { class: "problem-title", id: "ci-label-" + i, text: a.action }),
           el("p", { class: "problem-evidence", text: a.businessName + (due ? " · " + fill(t("ai.plan.due"), { date: due }) : "") }),
@@ -290,5 +293,5 @@
     }
   }
 
-  root.MomentumAgentUI = { findings: findings, plan: plan, checkin: checkin };
+  root.MomentumAgentUI = { findings: findings, plan: plan, checkin: checkin, converse: converse, formatDate: formatDate, today: today };
 })(this);

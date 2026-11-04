@@ -12,7 +12,7 @@ const http = require("http");
 const { checkMessage } = require("../app/js/escalation.js");
 const { validateProfile } = require("../app/js/validate.js");
 const schema = require("../app/js/schema.js");
-const { AGENT_FILES, TASKS } = require("./agents");
+const { AGENT_FILES, TASKS, taskFits } = require("./agents");
 const { buildSystem, taskSchema } = require("./context");
 const { LIMITS, createRateLimiter } = require("./limits");
 
@@ -91,7 +91,7 @@ function problemWith(body) {
   if (body.speaker && body.speaker !== "soldier" && body.speaker !== "cover") return "Unknown speaker.";
   if (body.task != null) {
     if (!Object.prototype.hasOwnProperty.call(TASKS, body.task)) return "Unknown task.";
-    if (TASKS[body.task].agent !== body.agent) return "That task belongs to a different agent.";
+    if (!taskFits(body.task, body.agent)) return "That task belongs to a different agent.";
   }
   return null;
 }

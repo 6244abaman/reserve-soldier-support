@@ -157,3 +157,18 @@ test("the Router never changes the profile", () => {
   route(p, { message: "I'm exhausted", request: { agent: "pricing" } });
   assert.strictEqual(JSON.stringify(p), before);
 });
+
+test("topic suggestions follow the blueprint's 'when each agent is used'", () => {
+  const p = profile((x) => {
+    x.businesses[0].numbers.monthsOfCashLeft = 2;          // under three months of cash
+    x.businesses[0].customers.lostDuringService = 5;       // lost customers during service
+  });
+  const { suggestTopics } = require("../app/js/router.js");
+  // Income fell from 32,000 to 14,000, so new customers also comes up; margin 18% suggests pricing.
+  assert.deepStrictEqual(suggestTopics(p, 5).map((x) => x.agent), ["cash_flow_debt", "customer_acquisition", "customer_followup", "pricing"]);
+  assert.strictEqual(suggestTopics(p).length, 2);                       // at most two by default
+  assert.strictEqual(suggestTopics(p)[0].reason, "sug.cash");
+  // A topic already worked on is not suggested again.
+  p.businesses[0].topicWork = [{ topic: "cash_flow_debt", date: "2026-11-04", summary: "", actions: [] }];
+  assert.strictEqual(suggestTopics(p)[0].agent, "customer_acquisition");
+});

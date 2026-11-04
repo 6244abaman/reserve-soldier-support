@@ -156,7 +156,35 @@
     return withNote(flow);
   }
 
-  var api = { route: route, sectorFile: sectorFile, FILES: FILES, MODULES: MODULES };
+  // Up to two topics worth suggesting for a business, from what the soldier
+  // answered (blueprint section 3, "When each agent is used"). Most urgent first.
+  // Each item: { agent, businessId, reason } where reason is a text key.
+  function suggestTopics(profile, limit) {
+    var out = [];
+    businesses(profile).forEach(function (b) {
+      var n = b.numbers || {};
+      var c = b.customers || {};
+      var cap = b.capacity || {};
+      var done = (b.topicWork || []).map(function (w) { return w.topic; });
+      function add(agent, reason) {
+        if (done.indexOf(agent) === -1) out.push({ agent: agent, businessId: b.id, reason: reason });
+      }
+      var overdue = (n.debts || []).some(function (d) { return d.overdue; });
+      if ((typeof n.monthsOfCashLeft === "number" && n.monthsOfCashLeft < 3) || overdue) add("cash_flow_debt", "sug.cash");
+      if ((typeof c.regularCount === "number" && c.regularCount < 5) ||
+          (typeof n.monthlyRevenueNow === "number" && typeof n.monthlyRevenueBefore === "number" && n.monthlyRevenueNow < n.monthlyRevenueBefore * 0.7)) {
+        add("customer_acquisition", "sug.customers");
+      }
+      if (typeof c.lostDuringService === "number" && c.lostDuringService > 0) add("customer_followup", "sug.followup");
+      var thin = b.pricing && typeof b.pricing.marginPercent === "number" && b.pricing.marginPercent < 20;
+      if (thin) add("pricing", "sug.pricing");
+      if (b.diagnosis && Array.isArray(b.benefitsUsed) === false) add("benefits_grants", "sug.benefits");
+      if (typeof cap.hoursPerWeek === "number" && cap.hoursPerWeek < 20) add("time_capacity", "sug.time");
+    });
+    return out.slice(0, limit || 2);
+  }
+
+  var api = { route: route, sectorFile: sectorFile, suggestTopics: suggestTopics, FILES: FILES, MODULES: MODULES };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.MomentumRouter = api;
 })(this);

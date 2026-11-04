@@ -608,3 +608,56 @@ h2.q-label { margin: 0; }
 .home-btn:hover { border-color: var(--primary); }
 
 .eyebrow { margin: 0 0 -0.6rem; color: var(--muted); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.02em; }
+
+/* ---------- Topics: suggestions on Home, and the topic conversation ---------- */
+
+.topics { display: flex; flex-direction: column; gap: 0.6rem; padding-top: 0.5rem; border-top: 1px solid var(--line); }
+.topics h2 { margin: 0.5rem 0 0; font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg); }
+.suggestions { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.suggestion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: var(--text-md) var(--font-body);
+  text-align: start;
+  cursor: pointer;
+}
+.suggestion:hover { background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+.suggestion-tag { color: var(--muted); font-size: var(--text-sm); font-weight: 700; }
+.suggestion-why { color: var(--muted); font-size: var(--text-sm); }
+
+.bubbles { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.bubble {
+  max-width: 88%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.bubble p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.bubble .who { display: block; font-size: var(--text-sm); font-weight: 700; color: var(--muted); }
+.bubble.mine { align-self: flex-end; background: color-mix(in srgb, var(--primary) 12%, var(--surface)); border-color: transparent; }
+.bubble.theirs { align-self: flex-start; }
+.chat-form { display: flex; flex-direction: column; gap: 0.5rem; }
+.chat-form textarea {
+  width: 100%;
+  min-height: 5.5rem;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  font: var(--text-md) var(--font-body);
+  resize: vertical;
+}
+.chat-form button[disabled] { opacity: 0.5; cursor: default; }
+.chat-problem { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; color: var(--danger); font-weight: 600; }
+.chat-problem p { margin: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

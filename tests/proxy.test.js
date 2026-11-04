@@ -265,3 +265,27 @@ test("every task file and answer shape exists and is valid JSON", () => {
     assert.strictEqual(schema.additionalProperties, false, t.schema);
   }
 });
+
+test("the topic task works for every module, and only for modules", async () => {
+  const summary = { summary: "Done.", actions: [], escalation: "none", escalationReason: "" };
+  const client = fakeClient({ content: [{ type: "text", text: JSON.stringify(summary) }] });
+  await withServer({ client }, async (base) => {
+    for (const agent of ["pricing", "cash_flow_debt", "customer_acquisition", "customer_followup", "benefits_grants", "staff", "time_capacity"]) {
+      const res = await post(base, request({ agent, task: "topic" }));
+      assert.strictEqual(res.status, 200, agent);
+    }
+    assert.strictEqual((await post(base, request({ agent: "diagnostic", task: "topic" }))).status, 400);
+  });
+  assert.match(client.calls[0].system[0].text, /Pricing module/);
+  assert.match(client.calls[0].system[0].text, /Task: sum up a topic conversation/);
+});
+
+test("a topic conversation (plain text, no task) reaches the module's prompt file", async () => {
+  const client = fakeClient();
+  await withServer({ client }, async (base) => {
+    const body = await (await post(base, request({ agent: "benefits_grants", messages: [{ role: "user", content: "Is there help for reservists?" }] }))).json();
+    assert.strictEqual(typeof body.reply, "string");
+  });
+  assert.match(client.calls[0].system[0].text, /Benefits and grants module/);
+  assert.strictEqual(client.calls[0].output_config.format, undefined);
+});

@@ -15,7 +15,14 @@ const REFERENCE_FILES = ["reference/escalation-rules.md", "reference/israeli-ben
 const TASKS = {
   findings: { agent: "diagnostic", file: "agents/tasks/findings.md", schema: "schema/outputs/findings.json" },
   plan: { agent: "recovery_plan", file: "agents/tasks/plan.md", schema: "schema/outputs/plan.json" },
-  checkin: { agent: "accountability", file: "agents/tasks/checkin.md", schema: "schema/outputs/checkin.json" }
+  checkin: { agent: "accountability", file: "agents/tasks/checkin.md", schema: "schema/outputs/checkin.json" },
+  // The end of a topic conversation: any of the seven modules can use it.
+  topic: { agents: require("../app/js/router.js").MODULES, file: "agents/tasks/topic.md", schema: "schema/outputs/topic.json" }
 };
 
-module.exports = { AGENT_FILES, REFERENCE_FILES, TASKS };
+function taskFits(task, agent) {
+  const t = TASKS[task];
+  return Boolean(t) && (t.agent === agent || (Array.isArray(t.agents) && t.agents.indexOf(agent) !== -1));
+}
+
+module.exports = { AGENT_FILES, REFERENCE_FILES, TASKS, taskFits };

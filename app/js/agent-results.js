@@ -121,7 +121,26 @@
     return { ok: true, profile: Acc.flagIfBlockedTwice(recorded.profile) };
   }
 
+  var TOPICS = ["pricing", "cash_flow_debt", "customer_acquisition", "customer_followup", "benefits_grants", "staff", "time_capacity"];
+
+  // Adds what a topic conversation produced to the business: summary and at
+  // most three actions, which then appear in the weekly check-in.
+  function applyTopic(profile, businessId, topic, result, today) {
+    if (TOPICS.indexOf(topic) === -1) throw new Error("Unknown topic: " + topic);
+    var p = Paths.copy(profile);
+    var b = p.businesses[businessIndex(p, businessId)];
+    var actions = list(result.actions).filter(function (a) { return a && text(a.action); }).slice(0, LIMIT).map(function (a) {
+      var out = { action: text(a.action), status: "not_started" };
+      var due = validDate(a.dueDate);
+      if (due) out.dueDate = due;
+      return out;
+    });
+    b.topicWork = (b.topicWork || []).concat([{ topic: topic, date: today, summary: text(result.summary), actions: actions }]);
+    return p;
+  }
+
   var api = {
+    applyTopic: applyTopic,
     escalationLevel: escalationLevel, flagFromResult: flagFromResult,
     applyFindings: applyFindings, applyPlan: applyPlan, applyCheckIn: applyCheckIn
   };

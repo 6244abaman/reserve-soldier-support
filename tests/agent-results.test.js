@@ -94,3 +94,24 @@ test("saving answers never changes the profile it was given", () => {
   R.applyCheckIn(p, [], { nextActions: [] }, "2026-11-04");
   assert.strictEqual(JSON.stringify(p), before);
 });
+
+test("a topic's summary and at most three actions are saved to the business", () => {
+  const result = {
+    summary: "Floor price 180 per hour from your numbers.",
+    actions: [
+      { action: "Quote the next three jobs at 220 per hour", dueDate: "2026-11-10" },
+      { action: "Tell two regulars about the new price", dueDate: "2026-11-30" },
+      { action: "Ask for a deposit on big jobs", dueDate: "bad" },
+      { action: "A fourth action", dueDate: "2026-11-12" }
+    ],
+    escalation: "none", escalationReason: ""
+  };
+  const p = R.applyTopic(sampleProfile(), "b-1", "pricing", result, "2026-11-04");
+  const w = p.businesses[0].topicWork[0];
+  assert.strictEqual(w.topic, "pricing");
+  assert.strictEqual(w.date, "2026-11-04");
+  assert.strictEqual(w.actions.length, 3);
+  assert.strictEqual(w.actions[2].dueDate, undefined);
+  valid(p);
+  assert.throws(() => R.applyTopic(sampleProfile(), "b-1", "astrology", result, "2026-11-04"), /Unknown topic/);
+});

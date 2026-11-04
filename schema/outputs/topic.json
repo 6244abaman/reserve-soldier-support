@@ -1,0 +1,48 @@
+{
+  "$comment": "Shape of the end-of-topic answer from Claude (agents/tasks/topic.md). At most three actions are enforced by the app.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "action",
+          "dueDate"
+        ]
+      }
+    },
+    "escalation": {
+      "type": "string",
+      "enum": [
+        "none",
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "escalationReason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary",
+    "actions",
+    "escalation",
+    "escalationReason"
+  ]
+}

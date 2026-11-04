@@ -1,6 +1,7 @@
 // The weekly tracker behind the Accountability agent (agents/accountability.md).
-// Keeps action statuses (done, in progress, blocked, dropped, with a note),
-// picks at most THREE actions for the week across ALL businesses (CLAUDE.md
+// Keeps action statuses (done, in progress, blocked, dropped, with a note) for
+// plan actions and topic actions, picks at most THREE actions for the week
+// across ALL businesses and topics (CLAUDE.md
 // rule 7), records check-ins, and notices when the same action has been
 // blocked two weeks in a row, which flags a mentor (escalation Level 3).
 //
@@ -19,19 +20,23 @@
   var STATUSES = ["not_started", "in_progress", "done", "blocked", "dropped"];
   var BLOCKED_TWICE_LABEL = "The same action was blocked two weeks in a row";
 
-  // Every action still open, in every business's plan.
-  // Each item: { businessId, businessName, priority, index, action, dueDate, status }
+  // Every action still open, in every business's plan and topic work.
+  // Each item: { businessId, businessName, source: "plan" | "topic",
+  //              priority (plan) or topic (topicWork index), index, action, dueDate, status }
   function openActions(profile) {
     var out = [];
+    function add(b, a, ref) {
+      var status = a.status || "not_started";
+      if (status === "done" || status === "dropped") return;
+      out.push(Object.assign({ businessId: b.id, businessName: b.name || "" }, ref,
+        { action: a.action || "", dueDate: a.dueDate || null, status: status }));
+    }
     (profile.businesses || []).forEach(function (b) {
-      var priorities = (b.plan && b.plan.priorities) || [];
-      priorities.forEach(function (pr, pi) {
-        (pr.actions || []).forEach(function (a, ai) {
-          var status = a.status || "not_started";
-          if (status === "done" || status === "dropped") return;
-          out.push({ businessId: b.id, businessName: b.name || "", priority: pi, index: ai,
-            action: a.action || "", dueDate: a.dueDate || null, status: status });
-        });
+      ((b.plan && b.plan.priorities) || []).forEach(function (pr, pi) {
+        (pr.actions || []).forEach(function (a, ai) { add(b, a, { source: "plan", priority: pi, index: ai }); });
+      });
+      (b.topicWork || []).forEach(function (tw, ti) {
+        (tw.actions || []).forEach(function (a, ai) { add(b, a, { source: "topic", topic: ti, topicName: tw.topic, index: ai }); });
       });
     });
     return out;
@@ -49,13 +54,16 @@
     return list.slice(0, WEEKLY_LIMIT).map(function (x) { return x.a; });
   }
 
-  // ref: { businessId, priority, index }. Returns a new profile.
+  // ref: { businessId, source, priority or topic, index } (source defaults to "plan").
+  // Returns a new profile.
   function setStatus(profile, ref, status, note) {
     if (STATUSES.indexOf(status) === -1) throw new Error("Unknown status: " + status);
     var p = Paths.copy(profile);
     var b = (p.businesses || []).filter(function (x) { return x.id === ref.businessId; })[0];
-    var action = b && b.plan && b.plan.priorities && b.plan.priorities[ref.priority] &&
-      b.plan.priorities[ref.priority].actions && b.plan.priorities[ref.priority].actions[ref.index];
+    var holder = !b ? null
+      : ref.source === "topic" ? (b.topicWork || [])[ref.topic]
+      : b.plan && b.plan.priorities && b.plan.priorities[ref.priority];
+    var action = holder && holder.actions && holder.actions[ref.index];
     if (!action) throw new Error("No such action");
     action.status = status;
     if (note != null && String(note).trim()) action.note = String(note).trim();

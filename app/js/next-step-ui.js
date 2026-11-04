@@ -1,6 +1,6 @@
 // The screen between steps: asks the Router what comes next and offers it
 // (the Diagnostic form and findings, the Recovery Plan, or the weekly
-// check-in). The modules arrive in Phase 8. The "Testing" box shows how the Router decided, which is
+// check-in), plus the seven topics, with one or two suggested from the answers. The "Testing" box shows how the Router decided, which is
 // back-office detail, so it appears only while testing mode is on.
 (function (root) {
   "use strict";
@@ -9,12 +9,18 @@
   var fill = root.MomentumDom.fill;
   var Router = root.MomentumRouter;
 
-  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId), onOpen(step, businessId) }
+  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId), onOpen(step, businessId), onOpenTopic(topic, businessId) }
   function show(options) {
     var t = options.t;
     var profile = options.profile;
     var r = Router.route(profile, { request: options.request || null });
     var mount = options.mount;
+
+    // A topic with its business known opens the topic conversation straight away.
+    if (options.request && Router.MODULES.indexOf(r.agent) !== -1 && r.businessId) {
+      options.onOpenTopic(r.agent, r.businessId);
+      return;
+    }
 
     function again(request) {
       show(Object.assign({}, options, { request: request }));
@@ -67,16 +73,33 @@
           row(t("test.agent"), r.file),
           name != null ? row(t("test.business"), name || r.businessId) : null,
           r.sectorFile ? row(t("test.sector"), r.sectorFile) : null),
-        el("p", { class: "testing-title", text: t("test.try") }),
-        el("div", { class: "module-buttons" }, Router.MODULES.map(function (m) {
-          return el("button", { type: "button", class: "chip", onclick: function () { again({ agent: m }); } }, t("mod." + m));
-        }))));
+        null));
     }
 
     parts.push(el("div", { class: "actions" },
       options.request ? el("button", { type: "button", class: r.agent === "ask_business" ? "btn-quiet" : "btn-primary", text: t("nav.home"),
         onclick: function () { again(null); } }) : null,
       el("button", { type: "button", class: "btn-quiet", text: t("next.back"), onclick: options.onBack })));
+
+    // Topics: suggested ones first (from the answers), then all seven.
+    if (!options.request && profile.meta && profile.meta.intakeComplete) {
+      var suggested = Router.suggestTopics(profile);
+      var several = (profile.businesses || []).length > 1;
+      parts.push(el("section", { class: "topics", "aria-labelledby": "topics-title" },
+        el("h2", { id: "topics-title", text: t("next.topics") }),
+        el("p", { class: "soft-note", text: t("next.topicsLead") }),
+        suggested.length ? el("ul", { class: "suggestions" }, suggested.map(function (sg) {
+          var b = (profile.businesses || []).filter(function (x) { return x.id === sg.businessId; })[0] || {};
+          return el("li", null, el("button", { type: "button", class: "suggestion",
+            onclick: function () { options.onOpenTopic(sg.agent, sg.businessId); } },
+            el("span", { class: "suggestion-tag", text: t("next.suggested") }),
+            el("strong", { text: t("mod." + sg.agent) + (several && b.name ? " · " + b.name : "") }),
+            el("span", { class: "suggestion-why", text: t(sg.reason) })));
+        })) : null,
+        el("div", { class: "module-buttons" }, Router.MODULES.map(function (m) {
+          return el("button", { type: "button", class: "chip", onclick: function () { again({ agent: m }); } }, t("mod." + m));
+        }))));
+    }
 
     if (!options.request) parts.push(el("p", { class: "soft-note", text: t("next.homeHint") }));
 

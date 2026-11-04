@@ -93,3 +93,16 @@ test("the tracker never changes the profile it was given", () => {
   acc.flagIfBlockedTwice(p);
   assert.strictEqual(JSON.stringify(p), before);
 });
+
+test("topic actions join the weekly list, still at most three in total", () => {
+  const p = withPlans();
+  p.businesses[0].topicWork = [{ topic: "pricing", date: "2026-11-04", summary: "New prices",
+    actions: [{ action: "Quote the next three jobs at the new price", dueDate: "2026-11-05", status: "not_started" }] }];
+  const week = acc.weeklyActions(p);
+  assert.strictEqual(week.length, 3);
+  assert.strictEqual(week[0].action, "Quote the next three jobs at the new price");
+  assert.strictEqual(week[0].source, "topic");
+  const done = acc.setStatus(p, { businessId: "b-1", source: "topic", topic: 0, index: 0 }, "done");
+  assert.strictEqual(done.businesses[0].topicWork[0].actions[0].status, "done");
+  assert.deepStrictEqual(validator.validateProfile(done, schema).errors, []);
+});
