@@ -7,7 +7,7 @@ services:
     name: rss-proxy
     runtime: node
     plan: free
-    branch: first-build          # switch to main once the build is approved
+    branch: main
     buildCommand: npm install --prefix proxy
     startCommand: node proxy/server.js
     healthCheckPath: /health
@@ -24,6 +24,6 @@ services:
   - type: web
     name: rss-app
     runtime: static
-    branch: first-build
+    branch: main
     buildCommand: echo "No build step"
     staticPublishPath: ./app

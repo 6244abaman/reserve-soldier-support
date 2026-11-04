@@ -40,4 +40,4 @@ Send both addresses (not the key) to whoever is building the app, so the app can
 
 ## Before real soldiers use the app
 
-In `render.yaml`, change `branch: first-build` to `branch: main` for both services once the build is approved and merged.
+Both services deploy from `main`. New work goes on a separate branch and is merged into `main` once approved.
