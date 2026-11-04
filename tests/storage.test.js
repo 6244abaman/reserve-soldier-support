@@ -14,7 +14,8 @@ function fakeLocalStorage() {
   return {
     data,
     getItem: (k) => (data.has(k) ? data.get(k) : null),
-    setItem: (k, v) => data.set(k, String(v))
+    setItem: (k, v) => data.set(k, String(v)),
+    removeItem: (k) => data.delete(k)
   };
 }
 
@@ -124,6 +125,17 @@ test("a full or blocked device gives a clear error instead of crashing", () => {
   const result = store.save(sampleProfile());
   assert.strictEqual(result.ok, false);
   assert.match(result.errors[0].message, /could not be saved on this device/);
+});
+
+test("remove deletes only that phone's profile (testing Start over button)", () => {
+  const { store } = makeStore();
+  store.save(sampleProfile());
+  const other = sampleProfile();
+  other.person.phone = "0529999999";
+  store.save(other);
+  assert.strictEqual(store.remove("+972 50 123 4567").ok, true);
+  assert.strictEqual(store.load("0501234567").profile, null);
+  assert.ok(store.load("0529999999").profile);
 });
 
 test("phone numbers are cleaned up the same way every time", () => {

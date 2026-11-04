@@ -134,5 +134,41 @@ window.MOMENTUM_I18N.en = {
   "h2.title": "This is worth looking at with a person",
   "h2.body": "What you described matters, and someone from the Momentum team should look at it with you. I won't give legal or financial advice about it here.",
   "h2.mentor": "I've marked that a mentor should reach out to you today.",
-  "h2.continue": "Continue the questions"
+  "h2.continue": "Continue the questions",
+
+  "done.continue": "Continue",
+  "next.back": "Back to my answers",
+  "next.default": "Back to my next step",
+
+  "router.intake": "Let's start by getting to know you and your business.",
+  "router.diagnostic": "Let's take a short look at {business}.",
+  "router.recovery_plan": "Now let's build a short plan for {business}.",
+  "router.accountability": "Let's see how the week went.",
+  "router.askBusiness": "Which business is this about?",
+  "router.coverNoAccess": "Your access isn't open right now. Please contact the business owner or the mentor.",
+  "router.notForCover": "This is the owner's decision. You can leave them a note, or contact the mentor if they can't be reached.",
+  "router.module.pricing": "Let's look at your pricing for {business}.",
+  "router.module.cash_flow_debt": "Let's look at the money in {business}: what comes in, what goes out, and what's urgent.",
+  "router.module.customer_acquisition": "Let's work out how {business} can win new customers.",
+  "router.module.customer_followup": "Let's reconnect with the existing customers of {business}.",
+  "router.module.benefits_grants": "Let's check which benefits and grants might apply to you and the business.",
+  "router.module.staff": "Let's look at the people side of {business}.",
+  "router.module.time_capacity": "Let's see how much time you really have each week, and where it goes.",
+
+  "mod.pricing": "Pricing",
+  "mod.cash_flow_debt": "Cash flow and debt",
+  "mod.customer_acquisition": "New customers",
+  "mod.customer_followup": "Customer follow-up",
+  "mod.benefits_grants": "Benefits and grants",
+  "mod.staff": "Staff",
+  "mod.time_capacity": "Time and capacity",
+
+  "test.title": "Testing mode",
+  "test.notBuilt": "This step is built in build phase {n}.",
+  "test.agent": "Agent file",
+  "test.business": "Business",
+  "test.sector": "Sector file",
+  "test.try": "Try a specific request:",
+  "test.reset": "Start over (testing only)",
+  "test.resetConfirm": "Tap again to delete the answers on this phone"
 };

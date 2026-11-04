@@ -95,7 +95,16 @@
       return { ok: true, profile: toSave, errors: [] };
     }
 
-    return { load: load, save: save, validate: validate };
+    // Deletes the saved profile for this phone. Used only by the testing
+    // "Start over" button; never called by the agents.
+    function remove(phone) {
+      var key = keyFor(phone);
+      if (!key || !backend) return { ok: false, errors: fail("Nothing to remove.").errors };
+      try { backend.removeItem(key); } catch (e) { return fail("Could not remove the saved profile."); }
+      return { ok: true, errors: [] };
+    }
+
+    return { load: load, save: save, validate: validate, remove: remove };
   }
 
   var api = { createProfileStore: createProfileStore, normalizePhone: normalizePhone };

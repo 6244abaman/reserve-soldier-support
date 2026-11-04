@@ -15,34 +15,14 @@
   // Questions that appear because of an answer just changed from the summary.
   var FOLLOW_UPS = ["callUpDates", "bizDebtAmount", "bizDebtOverdue"];
 
-  var store, t, lang, chartTemplate, mount;
+  var store, t, lang, chartTemplate, mount, onContinue;
   var state = { profile: null, pos: null, screen: "question", editing: false, note: null, error: null, handoff: 0 };
 
+  var el = root.MomentumDom.el;
+  var append = root.MomentumDom.append;
+  var fill = root.MomentumDom.fill;
+
   // ---------- small helpers ----------
-
-  function el(tag, props) {
-    var node = document.createElement(tag);
-    Object.keys(props || {}).forEach(function (k) {
-      var v = props[k];
-      if (v === false || v == null) return;
-      if (k === "text") node.textContent = v;
-      else if (k === "class") node.className = v;
-      else if (k.indexOf("on") === 0) node.addEventListener(k.slice(2), v);
-      else node.setAttribute(k, v === true ? "" : v);
-    });
-    for (var i = 2; i < arguments.length; i++) append(node, arguments[i]);
-    return node;
-  }
-
-  function append(node, child) {
-    if (child == null || child === false) return;
-    if (Array.isArray(child)) { child.forEach(function (c) { append(node, c); }); return; }
-    node.appendChild(typeof child === "string" ? document.createTextNode(child) : child);
-  }
-
-  function fill(text, vars) {
-    return String(text).replace(/\{(\w+)\}/g, function (_, k) { return vars && vars[k] != null ? vars[k] : ""; });
-  }
 
   function has(key) { return t(key) !== key; }
 
@@ -345,8 +325,11 @@
     return el("div", { class: "message" },
       el("h1", { tabindex: "-1", text: name ? fill(t("done.title"), { name: name }) : t("done.titleNoName") }),
       el("p", { class: "lead", text: fill(t("done.body"), { business: businessName(0) }) }),
-      el("div", { class: "actions" }, el("button", { type: "button", class: "btn-quiet", text: t("done.review"),
-        onclick: function () { go({ id: "summary", biz: null }); } })));
+      el("div", { class: "actions" },
+        el("button", { type: "button", class: "btn-primary", text: t("done.continue"),
+          onclick: function () { onContinue(state.profile); } }),
+        el("button", { type: "button", class: "btn-quiet", text: t("done.review"),
+          onclick: function () { go({ id: "summary", biz: null }); } })));
   }
 
   function handoffScreen() {
@@ -394,13 +377,14 @@
     if (target) target.focus({ preventScroll: true });
   }
 
-  // options: { mount, store, t, lang, chartTemplate }
+  // options: { mount, store, t, lang, chartTemplate, onContinue(profile) }
   function start(options) {
     mount = options.mount;
     store = options.store;
     t = options.t;
     lang = options.lang;
     chartTemplate = options.chartTemplate;
+    onContinue = options.onContinue;
 
     var saved = readPos();
     var loaded = saved && saved.phone ? store.load(saved.phone) : null;
@@ -418,5 +402,13 @@
     render(false);
   }
 
-  root.MomentumIntakeUI = { start: start, render: function () { render(false); } };
+  // Shows the summary again (used by "Back to my answers" after Intake).
+  function showSummary() { state.editing = false; go({ id: "summary", biz: null }); }
+
+  root.MomentumIntakeUI = {
+    start: start,
+    render: function () { render(false); },
+    showSummary: showSummary,
+    profile: function () { return state.profile; }
+  };
 })(this);

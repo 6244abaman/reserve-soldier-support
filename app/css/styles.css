@@ -394,6 +394,52 @@ h2.q-label { margin: 0; }
 .handoff p { margin: 0; }
 .handoff .contacts { font-weight: 700; }
 
+/* ---------- Next step and testing tools ---------- */
+
+/* Testing mode only: shows how the Router decided. Dashed so it never looks like part of the real app. */
+.testing-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+.testing-box p { margin: 0; }
+.testing-title { font-weight: 700; color: var(--ink); }
+.testing-box dl { margin: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.testing-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.testing-row dt { font-weight: 600; }
+.testing-row dd { margin: 0; min-width: 0; overflow-wrap: anywhere; font-family: ui-monospace, Menlo, Consolas, monospace; }
+
+.module-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  min-height: 2.75rem;
+  padding-inline: 0.9rem;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 600 var(--text-sm) var(--font-body);
+  cursor: pointer;
+}
+.chip:hover { border-color: var(--primary); }
+
+.testing-bar { display: flex; justify-content: center; padding-top: 1rem; border-top: 1.5px dashed var(--line); }
+.reset {
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--muted);
+  font: 600 var(--text-sm) var(--font-body);
+  cursor: pointer;
+}
+.reset.is-armed { color: var(--danger); background: var(--surface); }
+
 /* Visible keyboard focus everywhere */
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .question input:focus-visible,

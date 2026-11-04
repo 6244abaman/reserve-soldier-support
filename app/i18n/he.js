@@ -134,5 +134,41 @@ window.MOMENTUM_I18N.he = {
   "h2.title": "את זה כדאי לבדוק עם אדם",
   "h2.body": "מה שתיארת חשוב, וכדאי שאדם מצוות מומנטום יסתכל על זה איתך. לא אתן כאן ייעוץ משפטי או כספי בנושא הזה.",
   "h2.mentor": "סימנתי שמנטור צריך ליצור איתך קשר היום.",
-  "h2.continue": "להמשיך בשאלות"
+  "h2.continue": "להמשיך בשאלות",
+
+  "done.continue": "המשך",
+  "next.back": "חזרה לתשובות שלי",
+  "next.default": "חזרה לשלב הבא שלי",
+
+  "router.intake": "נתחיל בהיכרות קצרה איתך ועם העסק.",
+  "router.diagnostic": "בואו נעשה בדיקה קצרה של {business}.",
+  "router.recovery_plan": "עכשיו נבנה תוכנית קצרה עבור {business}.",
+  "router.accountability": "בואו נראה איך עבר השבוע.",
+  "router.askBusiness": "על איזה עסק מדובר?",
+  "router.coverNoAccess": "הגישה שלך סגורה כרגע. אפשר לפנות לבעל העסק או למנטור.",
+  "router.notForCover": "את זה בעל העסק מחליט. אפשר להשאיר לו הודעה, או לפנות למנטור אם אין איתו קשר.",
+  "router.module.pricing": "בואו נסתכל על המחירים של {business}.",
+  "router.module.cash_flow_debt": "בואו נסתכל על הכסף של {business}: מה נכנס, מה יוצא ומה דחוף.",
+  "router.module.customer_acquisition": "בואו נחשוב איך {business} יכול להביא לקוחות חדשים.",
+  "router.module.customer_followup": "בואו נחזור ללקוחות הקיימים של {business}.",
+  "router.module.benefits_grants": "בואו נבדוק אילו הטבות ומענקים אולי מתאימים לך ולעסק.",
+  "router.module.staff": "בואו נסתכל על הצוות של {business}.",
+  "router.module.time_capacity": "בואו נראה כמה זמן באמת יש לך בשבוע, ולאן הוא הולך.",
+
+  "mod.pricing": "תמחור",
+  "mod.cash_flow_debt": "תזרים וחובות",
+  "mod.customer_acquisition": "לקוחות חדשים",
+  "mod.customer_followup": "מעקב לקוחות",
+  "mod.benefits_grants": "הטבות ומענקים",
+  "mod.staff": "עובדים",
+  "mod.time_capacity": "זמן ועומס",
+
+  "test.title": "מצב בדיקה",
+  "test.notBuilt": "השלב הזה ייבנה בשלב {n} של הבנייה.",
+  "test.agent": "קובץ הסוכן",
+  "test.business": "עסק",
+  "test.sector": "קובץ התחום",
+  "test.try": "לנסות בקשה מסוימת:",
+  "test.reset": "להתחיל מחדש (לבדיקה בלבד)",
+  "test.resetConfirm": "לחיצה נוספת תמחק את התשובות בטלפון הזה"
 };
