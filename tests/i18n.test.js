@@ -28,3 +28,12 @@ test("every module has a name and a Router sentence", () => {
     assert.ok(he[`router.module.${m}`] && en[`router.module.${m}`], `router.module.${m}`);
   }
 });
+
+test("every Diagnostic section, question, and choice has text", () => {
+  const form = require("../app/js/diagnostic-form.js");
+  for (const s of form.SECTIONS) assert.ok(he[`diag.s.${s}`] && en[`diag.s.${s}`], `diag.s.${s}`);
+  for (const f of form.FIELDS) {
+    if (f.type !== "debts") assert.ok(he[`d.${f.id}`] && en[`d.${f.id}`], `d.${f.id}`);
+    for (const opt of f.options || []) assert.ok(he[`d.${f.id}.${opt}`] && en[`d.${f.id}.${opt}`], `d.${f.id}.${opt}`);
+  }
+});

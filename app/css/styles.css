@@ -448,3 +448,73 @@ h2.q-label { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* ---------- Diagnostic form ---------- */
+
+.d-sections { display: flex; flex-direction: column; gap: 1rem; }
+.diagnostic { display: flex; flex-direction: column; gap: 1rem; }
+
+.d-section {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1.1rem 1.1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-width: 0;
+}
+.d-section legend {
+  float: inline-start;   /* keeps the title inside the card */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--text-lg);
+}
+
+.d-field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+.d-label { margin: 0; font-weight: 600; line-height: 1.4; }
+.d-field .q-hint { margin: 0; }
+
+.d-field input:not([type=checkbox]),
+.d-field textarea,
+.debt-row input:not([type=checkbox]) {
+  width: 100%;
+  min-height: var(--tap);
+  padding-inline: 0.9rem;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  font: var(--text-md) var(--font-body);
+}
+.d-field textarea { padding-block: 0.7rem; line-height: 1.5; resize: vertical; }
+.d-field input:focus-visible, .d-field textarea:focus-visible, .debt-row input:focus-visible { outline-offset: 0; border-color: var(--focus); }
+
+.percent input { padding-inline: 0.9rem 2.25rem; }
+.percent-sign { position: absolute; right: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+
+.module-buttons .chip[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+
+.debt-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.debt-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  padding: 0.9rem;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+}
+.d-small { display: flex; flex-direction: column; gap: 0.3rem; font-size: var(--text-sm); color: var(--muted); min-width: 0; }
+.btn-quiet.small { min-height: 2.75rem; justify-self: start; font-size: var(--text-sm); }
+
+@media (min-width: 34rem) {
+  .debt-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* Room for the ₪ and % signs inside Diagnostic boxes (overrides the general box padding above). */
+.d-field .money input, .debt-row .money input { padding-inline-start: 2.25rem; }
+.d-field .percent input { padding-inline: 0.9rem 2.25rem; }

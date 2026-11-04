@@ -333,19 +333,7 @@
   }
 
   function handoffScreen() {
-    var level = state.handoff;
-    var k = "h" + level + ".";
-    return el("div", { class: "message handoff level-" + level, role: "alert" },
-      el("h1", { tabindex: "-1", text: t(k + "title") }),
-      el("p", { class: "lead", text: t(k + "body") }),
-      level === 1 ? el("p", { class: "contacts", text: t("h1.contacts") }) : null,
-      el("p", { text: t(k + "mentor") }),
-      el("div", { class: "actions" }, el("button", {
-        type: "button",
-        class: level === 1 ? "btn-quiet" : "btn-primary",
-        text: t(level === 1 ? "h1.back" : "h2.continue"),
-        onclick: function () { go(state.pos); }
-      })));
+    return root.MomentumHandoffUI.build(state.handoff, t, function () { go(state.pos); });
   }
 
   // ---------- drawing ----------
@@ -403,7 +391,12 @@
   }
 
   // Shows the summary again (used by "Back to my answers" after Intake).
-  function showSummary() { state.editing = false; go({ id: "summary", biz: null }); }
+  // latest is the newest saved profile, so later answers (like the Diagnostic) are kept.
+  function showSummary(latest) {
+    if (latest) state.profile = latest;
+    state.editing = false;
+    go({ id: "summary", biz: null });
+  }
 
   root.MomentumIntakeUI = {
     start: start,

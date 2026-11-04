@@ -12,7 +12,7 @@
 
   var BUILT_IN_PHASE = { diagnostic: 6, recovery_plan: 6, accountability: 6 };
 
-  // options: { mount, profile, t, request, testing, onBack }
+  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId) }
   function show(options) {
     var t = options.t;
     var profile = options.profile;
@@ -23,7 +23,20 @@
       show(Object.assign({}, options, { request: request }));
     }
 
-    var parts = [el("h1", { tabindex: "-1", text: fill(t(r.say.key), r.say.vars) })];
+    var business = r.businessId ? profile.businesses.filter(function (b) { return b.id === r.businessId; })[0] : null;
+    var formSent = r.agent === "diagnostic" && root.MomentumDiagnosticForm.awaitingFindings(business);
+    var title = formSent ? fill(t("next.formDone"), r.say.vars) : fill(t(r.say.key), r.say.vars);
+    var parts = [el("h1", { tabindex: "-1", text: title })];
+
+    // The Diagnostic form is ready to use now; its findings need Claude (Phase 6b).
+    if (r.agent === "diagnostic") {
+      parts.push(el("p", { class: "lead", text: t(formSent ? "next.formDoneLead" : "next.diagnosticLead") }));
+      parts.push(el("div", { class: "actions" }, el("button", {
+        type: "button", class: formSent ? "btn-quiet" : "btn-primary",
+        text: t(formSent ? "next.editForm" : "next.start"),
+        onclick: function () { options.onOpenDiagnostic(r.businessId); }
+      })));
+    }
 
     if (r.agent === "ask_business") {
       parts.push(el("div", { class: "choices" }, r.choices.map(function (c, i) {
@@ -34,11 +47,11 @@
     }
 
     if (options.testing && r.agent !== "ask_business") {
-      var phase = BUILT_IN_PHASE[r.agent] || 8;
+      var phase = r.agent === "diagnostic" ? "6b" : BUILT_IN_PHASE[r.agent] || 8;
       var name = r.businessId ? (profile.businesses.filter(function (b) { return b.id === r.businessId; })[0] || {}).name : null;
       parts.push(el("section", { class: "testing-box", "aria-label": t("test.title") },
         el("p", { class: "testing-title", text: t("test.title") }),
-        el("p", { text: fill(t("test.notBuilt"), { n: phase }) }),
+        el("p", { text: fill(t(r.agent === "diagnostic" ? "test.findings" : "test.notBuilt"), { n: phase }) }),
         el("dl", null,
           row(t("test.agent"), r.file),
           name != null ? row(t("test.business"), name || r.businessId) : null,

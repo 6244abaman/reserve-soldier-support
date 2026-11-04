@@ -68,55 +68,9 @@
     return Boolean(b && b.numbers && b.numbers.debts && b.numbers.debts.length > 0);
   }
 
-  function copy(value) { return JSON.parse(JSON.stringify(value)); }
-
-  // ---------- reading and writing "a.b[0].c" paths ----------
-
-  function parts(path) {
-    return path.replace(/\[(\d+)\]/g, ".$1").split(".");
-  }
-
-  function getPath(obj, path) {
-    return parts(path).reduce(function (o, k) { return o == null ? undefined : o[k]; }, obj);
-  }
-
-  function setPath(obj, path, value) {
-    var keys = parts(path);
-    var o = obj;
-    for (var i = 0; i < keys.length - 1; i++) {
-      if (o[keys[i]] == null) o[keys[i]] = /^\d+$/.test(keys[i + 1]) ? [] : {};
-      o = o[keys[i]];
-    }
-    o[keys[keys.length - 1]] = value;
-  }
-
-  function deletePath(obj, path) {
-    var keys = parts(path);
-    var parent = getPath(obj, keys.slice(0, -1).join("."));
-    if (parent && typeof parent === "object") delete parent[keys[keys.length - 1]];
-  }
-
-  function pathFor(path, biz) { return path.replace("#", String(biz)); }
-
-  // ---------- estimated / missing marks ----------
-
-  function mark(profile, path, state) {
-    profile.meta = profile.meta || {};
-    var list = (profile.meta.unconfirmedFields || []).filter(function (entry) {
-      return entry.slice(0, entry.lastIndexOf(":")) !== path;
-    });
-    if (state) list.push(path + ":" + state);
-    profile.meta.unconfirmedFields = list;
-  }
-
-  function markOf(profile, path) {
-    var list = (profile.meta && profile.meta.unconfirmedFields) || [];
-    for (var i = 0; i < list.length; i++) {
-      var cut = list[i].lastIndexOf(":");
-      if (list[i].slice(0, cut) === path) return list[i].slice(cut + 1);
-    }
-    return null;
-  }
+  var Paths = typeof module === "object" && module.exports ? require("./profile-paths.js") : root.MomentumPaths;
+  var copy = Paths.copy, getPath = Paths.getPath, setPath = Paths.setPath, deletePath = Paths.deletePath;
+  var pathFor = Paths.pathFor, mark = Paths.mark, markOf = Paths.markOf, parseNumber = Paths.parseNumber;
 
   // ---------- the order of questions ----------
 
@@ -238,13 +192,6 @@
     var p = copy(profile);
     p.meta.intakeComplete = true;
     return p;
-  }
-
-  // "32,000 ₪" -> 32000. Returns null when it is not a number.
-  function parseNumber(text) {
-    var clean = String(text == null ? "" : text).replace(/[\s,₪]/g, "");
-    if (!/^\d+(\.\d+)?$/.test(clean)) return null;
-    return Number(clean);
   }
 
   var api = {

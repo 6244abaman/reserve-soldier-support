@@ -46,15 +46,38 @@
     validator: window.MomentumValidate
   });
 
+  // The latest saved profile (Intake keeps its own copy while it runs).
+  var current = null;
+  function profile() { return current || window.MomentumIntakeUI.profile(); }
+
   function showNextStep(request) {
     view = { name: "next", request: request || null };
     window.MomentumNextStepUI.show({
       mount: mount,
-      profile: window.MomentumIntakeUI.profile(),
+      profile: profile(),
       t: t,
       request: view.request,
       testing: TESTING,
-      onBack: function () { view = { name: "intake" }; window.MomentumIntakeUI.showSummary(); }
+      onBack: function () {
+        var latest = profile();
+        view = { name: "intake" };
+        current = null;
+        window.MomentumIntakeUI.showSummary(latest);
+      },
+      onOpenDiagnostic: showDiagnostic
+    });
+  }
+
+  function showDiagnostic(businessId) {
+    view = { name: "diagnostic", businessId: businessId };
+    window.MomentumDiagnosticUI.show({
+      mount: mount,
+      profile: profile(),
+      businessId: businessId,
+      t: t,
+      store: store,
+      onSaved: function (saved) { current = saved; showNextStep(null); },
+      onBack: function () { showNextStep(null); }
     });
   }
 
@@ -72,6 +95,7 @@
       applyLang(btn.dataset.lang);
       saveLang(btn.dataset.lang);
       if (view.name === "next") showNextStep(view.request);
+      else if (view.name === "diagnostic") showDiagnostic(view.businessId);
       else window.MomentumIntakeUI.render();
       renderTesting();
     });
@@ -92,8 +116,8 @@
     btn.textContent = t(armed ? "test.resetConfirm" : "test.reset");
     btn.addEventListener("click", function () {
       if (!armed) { armed = true; renderTesting(); return; }
-      var profile = window.MomentumIntakeUI.profile();
-      if (profile && profile.person && profile.person.phone) store.remove(profile.person.phone);
+      var p = profile();
+      if (p && p.person && p.person.phone) store.remove(p.person.phone);
       try { localStorage.removeItem("momentum.intake"); } catch (e) { /* fine */ }
       location.reload();
     });
