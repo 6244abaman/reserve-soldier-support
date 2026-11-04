@@ -228,5 +228,10 @@ window.MOMENTUM_I18N.he = {
   "d.employees": "כמה עובדים יש, חוץ ממך?",
   "d.benefitsUsed": "באילו מענקים, פיצויים או עזרה כבר השתמשת, או שהגשת בקשה?",
   "d.benefitsUsed.hint": "שורה לכל אחד. אם עוד לא, אפשר לדלג.",
-  "d.save": "שמירת התשובות"
+  "d.save": "שמירת התשובות",
+
+  "d.otherHelpers": "מי עוד עוזר בעסק, חוץ מהעובדים?",
+  "d.otherHelpers.hint": "למשל שותף, בן או בת זוג, או בני משפחה. תפקידים מספיקים, בלי שמות.",
+  "d.equipmentOrStockProblems": "יש בעיות בציוד או במלאי?",
+  "d.equipmentOrStockProblems.hint": "למשל מכונה שהתקלקלה, או סחורה שתקועה על המדף."
 };

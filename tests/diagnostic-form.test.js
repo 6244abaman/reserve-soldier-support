@@ -22,6 +22,8 @@ function fullAnswers(over) {
     marginPercent: { value: 18, estimate: true },
     hoursPerWeek: { value: 35 },
     whoRunsItWhenAway: { value: "  my brother  " },
+    otherHelpers: { value: "my wife does the books" },
+    equipmentOrStockProblems: { value: "The table saw needs a new motor" },
     employees: { value: 1 },
     benefitsUsed: { value: ["Reserve compensation, applied in May", ""] }
   }, over);
@@ -52,6 +54,8 @@ test("a full form saves into the right business and passes the schema check", ()
   assert.strictEqual(b.pricing.method, "per_job");
   assert.strictEqual(b.capacity.whoRunsItWhenAway, "my brother");
   assert.deepStrictEqual(b.benefitsUsed, ["Reserve compensation, applied in May"]);
+  assert.strictEqual(b.capacity.otherHelpers, "my wife does the books");
+  assert.strictEqual(b.capacity.equipmentOrStockProblems, "The table saw needs a new motor");
   assert.deepStrictEqual(b.diagnosis, { unknowns: [] });
   assert.deepStrictEqual(validator.validateProfile(p, schema).errors, []);
 });
@@ -106,6 +110,7 @@ test("the typed words are collected for the shared safety check", () => {
   const text = form.typedText(fullAnswers({ whoRunsItWhenAway: { value: "nobody, I might lose my house" } }));
   assert.match(text, /lose my house/);
   assert.match(text, /Wood supplier/);
+  assert.match(text, /table saw/);
 });
 
 test("the form never changes the profile it was given", () => {

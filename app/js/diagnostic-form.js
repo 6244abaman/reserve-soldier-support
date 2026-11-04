@@ -33,6 +33,8 @@
     { id: "hoursPerWeek", section: "capacity", type: "number", estimate: true, path: "capacity.hoursPerWeek" },
     { id: "whoRunsItWhenAway", section: "capacity", type: "text", path: "capacity.whoRunsItWhenAway" },
     { id: "employees", section: "capacity", type: "number", estimate: true, path: "employees" },
+    { id: "otherHelpers", section: "capacity", type: "text", path: "capacity.otherHelpers" },
+    { id: "equipmentOrStockProblems", section: "capacity", type: "longtext", path: "capacity.equipmentOrStockProblems" },
     { id: "benefitsUsed", section: "benefits", type: "lines", path: "benefitsUsed" }
   ];
 
@@ -122,7 +124,7 @@
 
       var value = a.value;
       if (f.type === "number" && typeof value !== "number") value = Paths.parseNumber(value);
-      if (f.type === "text") value = String(value).trim();
+      if (f.type === "text" || f.type === "longtext") value = String(value).trim();
       if (f.type === "lines") value = value.map(function (s) { return String(s).trim(); }).filter(Boolean);
       Paths.setPath(p, path, value);
       Paths.mark(p, path, f.estimate && a.estimate ? "estimated" : null);
@@ -138,7 +140,7 @@
     FIELDS.forEach(function (f) {
       var a = answers[f.id];
       if (!a || a.value == null) return;
-      if (f.type === "text") parts.push(a.value);
+      if (f.type === "text" || f.type === "longtext") parts.push(a.value);
       if (f.type === "lines") parts.push(a.value.join("\n"));
       if (f.type === "debts") a.value.forEach(function (d) { if (d.type) parts.push(d.type); });
     });

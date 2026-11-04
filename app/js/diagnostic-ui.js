@@ -141,6 +141,7 @@
     function field(f) {
       var parts = f.type === "number" ? numberField(f)
         : f.type === "text" ? textField(f, false)
+        : f.type === "longtext" ? textField(f, true)
         : f.type === "lines" ? textField(f, true)
         : f.type === "choice" ? choiceField(f, false)
         : f.type === "multi" ? choiceField(f, true)

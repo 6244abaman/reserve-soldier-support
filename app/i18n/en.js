@@ -228,5 +228,10 @@ window.MOMENTUM_I18N.en = {
   "d.employees": "How many people work there, besides you?",
   "d.benefitsUsed": "Which grants, compensation, or help have you already used or applied for?",
   "d.benefitsUsed.hint": "One per line. If none yet, skip it.",
-  "d.save": "Save my answers"
+  "d.save": "Save my answers",
+
+  "d.otherHelpers": "Who else helps in the business, besides employees?",
+  "d.otherHelpers.hint": "For example a partner, spouse, or family members. Roles are enough, no names.",
+  "d.equipmentOrStockProblems": "Any problems with equipment or stock?",
+  "d.equipmentOrStockProblems.hint": "For example a broken machine, or stock stuck on the shelves."
 };

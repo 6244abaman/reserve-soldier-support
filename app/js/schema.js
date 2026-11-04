@@ -328,6 +328,12 @@
                 },
                 "whoRunsItWhenAway": {
                   "type": "string"
+                },
+                "equipmentOrStockProblems": {
+                  "type": "string"
+                },
+                "otherHelpers": {
+                  "type": "string"
                 }
               }
             },
