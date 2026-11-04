@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Momentum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Rubik:wght@500;600&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="page">
+
+    <header class="topbar">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="14" width="5" height="8" rx="1.5"></rect>
+          <rect x="9.5" y="9" width="5" height="13" rx="1.5"></rect>
+          <rect x="17" y="3" width="5" height="19" rx="1.5"></rect>
+        </svg>
+        <span class="brand-name" data-i18n="brand">מומנטום</span>
+      </div>
+      <div class="lang-switch" role="group" aria-label="Language / שפה">
+        <button type="button" id="lang-he" data-lang="he" aria-pressed="true">עברית</button>
+        <button type="button" id="lang-en" data-lang="en" aria-pressed="false">English</button>
+      </div>
+    </header>
+
+    <section class="progress" aria-labelledby="progress-label">
+      <p class="progress-label" id="progress-label">
+        <span data-i18n="stepOf">שלב 1 מתוך 4</span>
+        <span class="progress-sep" aria-hidden="true">·</span>
+        <span data-i18n="step1">עליך</span>
+      </p>
+      <div class="segments" aria-hidden="true">
+        <span class="seg is-current"></span>
+        <span class="seg"></span>
+        <span class="seg"></span>
+        <span class="seg"></span>
+      </div>
+    </section>
+
+    <section class="intro">
+      <h1 data-i18n="heading">נחזיר את העסק לתנועה, צעד אחר צעד</h1>
+      <p data-i18n="intro">אשאל כמה שאלות קצרות עליך ועל כל אחד מהעסקים שלך, כדי שכל צעד בהמשך יתאים למצב האמיתי שלך. את הסיפור מספרים פעם אחת בלבד.</p>
+      <p class="note" data-i18n="note">אפשר לדלג על כל שאלה. התשובות משמשות רק כדי להתאים לך את הליווי.</p>
+    </section>
+
+    <form class="question" id="question-form" novalidate>
+      <label class="q-label" for="first-name" data-i18n="qName">איך קוראים לך?</label>
+      <p class="q-hint" id="first-name-hint" data-i18n="qNameHint">שם פרטי מספיק.</p>
+      <input id="first-name" name="firstName" type="text" autocomplete="given-name"
+             aria-describedby="first-name-hint" data-i18n-placeholder="qNamePlaceholder" placeholder="לדוגמה: נועם">
+      <div class="actions">
+        <button type="submit" class="btn-primary" data-i18n="continue">המשך</button>
+        <button type="button" class="btn-quiet" id="skip" data-i18n="skip">דלג על השאלה</button>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </form>
+
+  </main>
+
+  <script src="i18n/he.js"></script>
+  <script src="i18n/en.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
