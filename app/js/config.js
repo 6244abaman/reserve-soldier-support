@@ -3,5 +3,5 @@
 //   proxyUrl: "https://momentum-proxy-xxxx.onrender.com"
 // The API key is NEVER put here; it lives only on the proxy.
 window.MOMENTUM_CONFIG = {
-  proxyUrl: ""
+  proxyUrl: "https://rss-proxy-jk1u.onrender.com"
 };
