@@ -3,9 +3,11 @@
   "title": "Momentum Recovery Profile",
   "type": "object",
   "required": ["meta", "person", "service", "businesses"],
+  "additionalProperties": false,
   "properties": {
     "meta": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "profileId": { "type": "string" },
         "language": { "enum": ["he", "en"] },
@@ -17,6 +19,7 @@
     },
     "person": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "firstName": { "type": "string" },
         "phone": { "type": "string" },
@@ -29,6 +32,7 @@
     },
     "service": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "roleGeneral": { "type": "string" },
         "reserveDaysLastTwoYears": { "type": "number" },
@@ -39,6 +43,7 @@
     },
     "cover": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "active": { "type": "boolean" },
         "name": { "type": "string" },
@@ -61,6 +66,7 @@
       "items": {
         "type": "object",
         "required": ["id", "name", "sector"],
+        "additionalProperties": false,
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
@@ -75,6 +81,7 @@
           "employees": { "type": "number" },
           "numbers": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "monthlyRevenueBefore": { "type": "number" },
               "monthlyRevenueNow": { "type": "number" },
@@ -85,6 +92,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "type": { "type": "string" },
                     "amount": { "type": "number" },
@@ -97,6 +105,7 @@
           },
           "customers": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "regularCount": { "type": "number" },
               "lostDuringService": { "type": "number" },
@@ -105,6 +114,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "name": { "type": "string" },
                     "group": { "enum": ["active", "lapsed", "open_quote", "warm_lead"] },
@@ -118,6 +128,7 @@
           },
           "pricing": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "method": { "type": "string" },
               "marginPercent": { "type": "number" },
@@ -129,6 +140,7 @@
           },
           "capacity": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "hoursPerWeek": { "type": "number" },
               "whoRunsItWhenAway": { "type": "string" }
@@ -137,6 +149,7 @@
           "benefitsUsed": { "type": "array", "items": { "type": "string" } },
           "diagnosis": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "completedAt": { "type": "string", "format": "date-time" },
               "topProblems": {
@@ -144,6 +157,7 @@
                 "maxItems": 3,
                 "items": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "problem": { "type": "string" },
                     "evidence": { "type": "string" },
@@ -157,6 +171,7 @@
           },
           "plan": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "summary": { "type": "string" },
               "priorities": {
@@ -164,12 +179,14 @@
                 "maxItems": 3,
                 "items": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "goal": { "type": "string" },
                     "actions": {
                       "type": "array",
                       "items": {
                         "type": "object",
+                        "additionalProperties": false,
                         "properties": {
                           "action": { "type": "string" },
                           "dueDate": { "type": "string", "format": "date" },
@@ -187,6 +204,7 @@
           },
           "marketing": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
               "idealCustomer": { "type": "string" },
               "idealCustomerConfirmed": { "type": "boolean" },
@@ -197,6 +215,7 @@
                 "type": "array",
                 "items": {
                   "type": "object",
+                  "additionalProperties": false,
                   "properties": {
                     "plannedDate": { "type": "string", "format": "date" },
                     "channel": { "type": "string" },
@@ -218,6 +237,7 @@
             "type": "array",
             "items": {
               "type": "object",
+              "additionalProperties": false,
               "properties": {
                 "date": { "type": "string", "format": "date" },
                 "customer": { "type": "string" },
@@ -232,6 +252,7 @@
     },
     "goals": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "threeMonthOutcome": { "type": "string" }
       }
@@ -240,6 +261,7 @@
       "type": "array",
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "properties": {
           "date": { "type": "string", "format": "date" },
           "answeredBy": { "enum": ["soldier", "cover"] },
@@ -252,6 +274,7 @@
     },
     "flags": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "mentorEscalation": { "type": "boolean" },
         "escalationReason": { "type": "string" },
