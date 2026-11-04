@@ -23,6 +23,9 @@
     document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
       el.placeholder = t[el.dataset.i18nPlaceholder];
     });
+    document.querySelectorAll("[data-i18n-aria-label]").forEach(function (el) {
+      el.setAttribute("aria-label", t[el.dataset.i18nAriaLabel]);
+    });
     document.querySelectorAll("[data-lang]").forEach(function (btn) {
       btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang));
     });

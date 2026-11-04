@@ -4,6 +4,7 @@ window.MOMENTUM_I18N.en = {
   brand: "Momentum",
   stepOf: "Step 1 of 4",
   step1: "About you",
+  chartLabel: "Chart: a red line dips and then climbs, like a business coming back",
   heading: "Let's get your business moving again, one step at a time",
   intro: "I'll ask a few short questions about you and each of your businesses, so every next step fits your real situation. You only have to tell the story once.",
   note: "You can skip any question. Your answers are used only to tailor your support.",

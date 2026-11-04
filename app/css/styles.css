@@ -14,6 +14,7 @@
   --primary-hover: #163A55;
   --on-primary: #FFFFFF;
   --accent: #D9952B;
+  --rise: #C8372D;
   --focus: #2F7FB8;
 
   --font-display: "Rubik", "Assistant", "Arial Hebrew", Arial, sans-serif;
@@ -39,6 +40,7 @@
     --primary-hover: #A6CDE9;
     --on-primary: #0C1820;
     --accent: #E7B25A;
+    --rise: #F0675B;
     --focus: #86B9DE;
     color-scheme: dark;
   }
@@ -54,6 +56,7 @@
   --primary-hover: #A6CDE9;
   --on-primary: #0C1820;
   --accent: #E7B25A;
+  --rise: #F0675B;
   --focus: #86B9DE;
   color-scheme: dark;
 }
@@ -148,6 +151,42 @@ body {
 
 /* Intro */
 .intro { display: flex; flex-direction: column; gap: 0.75rem; }
+
+/* Comeback chart: a red line dips (time away) and then climbs (the business returning).
+   Time runs left to right in both languages, as on most charts. */
+.comeback {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-block-end: 0.5rem;
+  direction: ltr;
+}
+
+.comeback-grid line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 5; }
+.comeback-base { stroke: var(--line); stroke-width: 1.5; }
+.comeback-area { fill: var(--rise); opacity: 0.1; stroke: none; }
+
+.comeback-line {
+  fill: none;
+  stroke: var(--rise);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: comeback-draw 1.4s ease-out both;
+}
+
+.comeback-dot {
+  fill: var(--rise);
+  stroke: var(--bg);
+  stroke-width: 3;
+  animation: comeback-pop 0.3s ease-out 1.3s both;
+}
+
+@keyframes comeback-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes comeback-pop { from { transform: scale(0); } to { transform: scale(1); } }
+.comeback-dot { transform-box: fill-box; transform-origin: center; }
 
 h1 {
   margin: 0;
