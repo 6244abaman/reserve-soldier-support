@@ -12,8 +12,8 @@ const http = require("http");
 const { checkMessage } = require("../app/js/escalation.js");
 const { validateProfile } = require("../app/js/validate.js");
 const schema = require("../app/js/schema.js");
-const { AGENT_FILES } = require("./agents");
-const { buildSystem } = require("./context");
+const { AGENT_FILES, TASKS } = require("./agents");
+const { buildSystem, taskSchema } = require("./context");
 const { LIMITS, createRateLimiter } = require("./limits");
 
 const MODEL = process.env.CLAUDE_MODEL || "claude-opus-5-5";
@@ -82,6 +82,10 @@ function problemWith(body) {
   }
   if (msgs[0].role !== "user" || msgs[msgs.length - 1].role !== "user") return "The conversation must start and end with the soldier.";
   if (body.speaker && body.speaker !== "soldier" && body.speaker !== "cover") return "Unknown speaker.";
+  if (body.task != null) {
+    if (!Object.prototype.hasOwnProperty.call(TASKS, body.task)) return "Unknown task.";
+    if (TASKS[body.task].agent !== body.agent) return "That task belongs to a different agent.";
+  }
   return null;
 }
 
@@ -137,8 +141,10 @@ function createServer(options) {
     const anthropic = getClient();
     if (!anthropic) return send(res, 503, { error: "The proxy is not set up yet (no API key)." }, cors);
 
+    const task = body.task || null;
     const system = buildSystem({
       agent: body.agent,
+      task,
       profile: body.profile,
       businessId: body.businessId || null,
       speaker,
@@ -154,7 +160,9 @@ function createServer(options) {
         max_tokens: 16000,
         system,
         messages: body.messages.map((m) => ({ role: m.role, content: m.content })),
-        output_config: { effort: "medium" },
+        output_config: task
+          ? { effort: "medium", format: { type: "json_schema", schema: taskSchema(task) } }
+          : { effort: "medium" },
         // If a safety classifier declines, the API retries on a fallback model in the same call.
         betas: ["server-side-fallback-2026-07-01"],
         fallbacks: "default"
@@ -170,6 +178,16 @@ function createServer(options) {
 
       if (response.stop_reason === "refusal") {
         return send(res, 200, { reply: null, refused: true }, cors);
+      }
+      if (task) {
+        // A task answer must be complete JSON in the agreed shape.
+        let result = null;
+        try { result = response.stop_reason === "max_tokens" ? null : JSON.parse(reply); } catch (e) { result = null; }
+        if (!result) return send(res, 502, { error: "The answer came back incomplete. Please try again." }, cors);
+        return send(res, 200, {
+          result,
+          escalation: escalation.level === 3 ? { level: 3, category: escalation.category, label: escalation.label } : null
+        }, cors);
       }
       return send(res, 200, {
         reply,

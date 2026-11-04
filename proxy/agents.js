@@ -10,4 +10,12 @@ const AGENT_FILES = Object.assign({}, ROUTER_FILES, {
 // only allowed source for benefit rules, amounts, and deadlines).
 const REFERENCE_FILES = ["reference/escalation-rules.md", "reference/israeli-benefits.md"];
 
-module.exports = { AGENT_FILES, REFERENCE_FILES };
+// Tasks that need an answer in a fixed shape the app can save. Each task
+// belongs to one agent, adds its own instruction file, and has a JSON schema.
+const TASKS = {
+  findings: { agent: "diagnostic", file: "agents/tasks/findings.md", schema: "schema/outputs/findings.json" },
+  plan: { agent: "recovery_plan", file: "agents/tasks/plan.md", schema: "schema/outputs/plan.json" },
+  checkin: { agent: "accountability", file: "agents/tasks/checkin.md", schema: "schema/outputs/checkin.json" }
+};
+
+module.exports = { AGENT_FILES, REFERENCE_FILES, TASKS };

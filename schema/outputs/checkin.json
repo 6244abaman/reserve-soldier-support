@@ -1,0 +1,56 @@
+{
+  "$comment": "Shape of the checkin answer from Claude (agents/tasks/checkin.md). At most three items are enforced by the app, because structured outputs do not support item limits.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "nextActions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "businessId": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "businessId",
+          "action",
+          "dueDate"
+        ]
+      }
+    },
+    "planNeedsReview": {
+      "type": "boolean"
+    },
+    "escalation": {
+      "type": "string",
+      "enum": [
+        "none",
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "escalationReason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary",
+    "nextActions",
+    "planNeedsReview",
+    "escalation",
+    "escalationReason"
+  ]
+}

@@ -1,7 +1,6 @@
-// The screen after Intake: asks the Router what comes next and shows it.
-// The Diagnostic, Recovery Planning, and Accountability screens arrive in
-// Phase 6 and the modules in Phase 8; until then this screen shows the
-// Router's choice. The "Testing" box shows how the Router decided, which is
+// The screen between steps: asks the Router what comes next and offers it
+// (the Diagnostic form and findings, the Recovery Plan, or the weekly
+// check-in). The modules arrive in Phase 8. The "Testing" box shows how the Router decided, which is
 // back-office detail, so it appears only while testing mode is on.
 (function (root) {
   "use strict";
@@ -10,9 +9,7 @@
   var fill = root.MomentumDom.fill;
   var Router = root.MomentumRouter;
 
-  var BUILT_IN_PHASE = { diagnostic: 6, recovery_plan: 6, accountability: 6 };
-
-  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId) }
+  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId), onOpen(step, businessId) }
   function show(options) {
     var t = options.t;
     var profile = options.profile;
@@ -28,14 +25,23 @@
     var title = formSent ? fill(t("next.formDone"), r.say.vars) : fill(t(r.say.key), r.say.vars);
     var parts = [el("h1", { tabindex: "-1", text: title })];
 
-    // The Diagnostic form is ready to use now; its findings need Claude (Phase 6b).
+    // The three main steps: Diagnostic (form, then findings), Recovery Plan, weekly check-in.
+    function button(primary, key, onclick) {
+      return el("button", { type: "button", class: primary ? "btn-primary" : "btn-quiet", text: t(key), onclick: onclick });
+    }
     if (r.agent === "diagnostic") {
       parts.push(el("p", { class: "lead", text: t(formSent ? "next.formDoneLead" : "next.diagnosticLead") }));
-      parts.push(el("div", { class: "actions" }, el("button", {
-        type: "button", class: formSent ? "btn-quiet" : "btn-primary",
-        text: t(formSent ? "next.editForm" : "next.start"),
-        onclick: function () { options.onOpenDiagnostic(r.businessId); }
-      })));
+      parts.push(el("div", { class: "actions" },
+        formSent ? button(true, "next.findings", function () { options.onOpen("findings", r.businessId); }) : null,
+        button(!formSent, formSent ? "next.editForm" : "next.start", function () { options.onOpenDiagnostic(r.businessId); })));
+    }
+    if (r.agent === "recovery_plan") {
+      parts.push(el("p", { class: "lead", text: t("next.planLead") }));
+      parts.push(el("div", { class: "actions" }, button(true, "next.planStart", function () { options.onOpen("plan", r.businessId); })));
+    }
+    if (r.agent === "accountability") {
+      parts.push(el("p", { class: "lead", text: t("next.checkinLead") }));
+      parts.push(el("div", { class: "actions" }, button(true, "next.checkinStart", function () { options.onOpen("checkin", null); })));
     }
 
     if (r.agent === "ask_business") {
@@ -47,11 +53,12 @@
     }
 
     if (options.testing && r.agent !== "ask_business") {
-      var phase = r.agent === "diagnostic" ? "6b" : BUILT_IN_PHASE[r.agent] || 8;
+      var url = (root.MOMENTUM_CONFIG && root.MOMENTUM_CONFIG.proxyUrl) || "";
+      var built = ["diagnostic", "recovery_plan", "accountability"].indexOf(r.agent) !== -1;
       var name = r.businessId ? (profile.businesses.filter(function (b) { return b.id === r.businessId; })[0] || {}).name : null;
       parts.push(el("section", { class: "testing-box", "aria-label": t("test.title") },
         el("p", { class: "testing-title", text: t("test.title") }),
-        el("p", { text: fill(t(r.agent === "diagnostic" ? "test.findings" : "test.notBuilt"), { n: phase }) }),
+        el("p", { text: built ? (url ? fill(t("test.proxy"), { url: url }) : t("test.noProxy")) : fill(t("test.notBuilt"), { n: 8 }) }),
         el("dl", null,
           row(t("test.agent"), r.file),
           name != null ? row(t("test.business"), name || r.businessId) : null,

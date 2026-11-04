@@ -64,7 +64,23 @@
         current = null;
         window.MomentumIntakeUI.showSummary(latest);
       },
-      onOpenDiagnostic: showDiagnostic
+      onOpenDiagnostic: showDiagnostic,
+      onOpen: showAgent
+    });
+  }
+
+  // findings, plan, or checkin, answered by Claude through the proxy.
+  function showAgent(step, businessId) {
+    view = { name: "agent", step: step, businessId: businessId };
+    window.MomentumAgentUI[step]({
+      mount: mount,
+      t: t,
+      lang: function () { return lang; },
+      store: store,
+      profile: profile(),
+      businessId: businessId,
+      onDone: function (saved) { current = saved; showNextStep(null); },
+      onBack: function () { showNextStep(null); }
     });
   }
 
@@ -96,6 +112,7 @@
       saveLang(btn.dataset.lang);
       if (view.name === "next") showNextStep(view.request);
       else if (view.name === "diagnostic") showDiagnostic(view.businessId);
+      else if (view.name === "agent") showNextStep(null);   // do not re-send to Claude just for a language switch
       else window.MomentumIntakeUI.render();
       renderTesting();
     });

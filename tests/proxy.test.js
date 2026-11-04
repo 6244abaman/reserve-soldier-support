@@ -210,3 +210,44 @@ test("only the app's own web address may call the proxy from a browser", async (
     delete process.env.ALLOWED_ORIGINS;
   }
 });
+
+test("a task adds its instruction file and asks for the agreed JSON shape", async () => {
+  const findings = { summary: "Cash is tight.", topProblems: [], unknowns: [], escalation: "none", escalationReason: "" };
+  const client = fakeClient({ content: [{ type: "text", text: JSON.stringify(findings) }] });
+  await withServer({ client }, async (base) => {
+    const body = await (await post(base, request({ task: "findings" }))).json();
+    assert.deepStrictEqual(body.result, findings);
+  });
+  const params = client.calls[0];
+  assert.match(params.system[0].text, /Task: give the findings/);
+  assert.strictEqual(params.output_config.format.type, "json_schema");
+  assert.ok(params.output_config.format.schema.properties.topProblems);
+  assert.strictEqual(params.output_config.format.schema.$comment, undefined);
+});
+
+test("a task must match its agent, and unknown tasks are refused", async () => {
+  await withServer({ client: fakeClient() }, async (base) => {
+    assert.strictEqual((await post(base, request({ task: "plan" }))).status, 400);       // plan belongs to recovery_plan
+    assert.strictEqual((await post(base, request({ task: "secrets" }))).status, 400);
+    assert.strictEqual((await post(base, request({ agent: "recovery_plan", task: "plan" }))).status, 502); // fake reply is not JSON
+  });
+});
+
+test("an incomplete task answer is reported, not passed on", async () => {
+  const client = fakeClient({ stop_reason: "max_tokens", content: [{ type: "text", text: "{\"summary\": \"Cash" }] });
+  await withServer({ client }, async (base) => {
+    const res = await post(base, request({ task: "findings" }));
+    assert.strictEqual(res.status, 502);
+  });
+});
+
+test("every task file and answer shape exists and is valid JSON", () => {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const { TASKS } = require("../proxy/agents.js");
+  for (const t of Object.values(TASKS)) {
+    assert.ok(fs.existsSync(path.join(__dirname, "..", t.file)), t.file);
+    const schema = JSON.parse(fs.readFileSync(path.join(__dirname, "..", t.schema), "utf8"));
+    assert.strictEqual(schema.additionalProperties, false, t.schema);
+  }
+});

@@ -1,0 +1,75 @@
+{
+  "$comment": "Shape of the plan answer from Claude (agents/tasks/plan.md). At most three items are enforced by the app, because structured outputs do not support item limits.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "priorities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "goal": {
+            "type": "string"
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "action": {
+                  "type": "string"
+                },
+                "dueDate": {
+                  "type": "string",
+                  "format": "date"
+                }
+              },
+              "required": [
+                "action",
+                "dueDate"
+              ]
+            }
+          },
+          "successMeasure": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "goal",
+          "actions",
+          "successMeasure"
+        ]
+      }
+    },
+    "openQuestions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "escalation": {
+      "type": "string",
+      "enum": [
+        "none",
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "escalationReason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary",
+    "priorities",
+    "openQuestions",
+    "escalation",
+    "escalationReason"
+  ]
+}

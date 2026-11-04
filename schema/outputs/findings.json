@@ -1,0 +1,67 @@
+{
+  "$comment": "Shape of the findings answer from Claude (agents/tasks/findings.md). At most three items are enforced by the app, because structured outputs do not support item limits.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "topProblems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "problem": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "urgent": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "problem",
+          "evidence",
+          "confidence",
+          "urgent"
+        ]
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "escalation": {
+      "type": "string",
+      "enum": [
+        "none",
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "escalationReason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary",
+    "topProblems",
+    "unknowns",
+    "escalation",
+    "escalationReason"
+  ]
+}

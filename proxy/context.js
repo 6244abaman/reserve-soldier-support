@@ -8,7 +8,7 @@
 //   2. this turn: language, date, who is speaking, and the profile
 const fs = require("fs");
 const path = require("path");
-const { AGENT_FILES, REFERENCE_FILES } = require("./agents");
+const { AGENT_FILES, REFERENCE_FILES, TASKS } = require("./agents");
 const { sectorFile } = require("../app/js/router.js");
 
 const ROOT = path.join(__dirname, "..");
@@ -32,16 +32,24 @@ function section(title, body) {
   return "<" + title + ">\n" + body.trim() + "\n</" + title + ">";
 }
 
-// input: { agent, profile, businessId, speaker, today }
+// The JSON schema for a task's answer, without notes meant for people ($comment).
+function taskSchema(task) {
+  const schema = JSON.parse(read(TASKS[task].schema));
+  delete schema.$comment;
+  return schema;
+}
+
+// input: { agent, task, profile, businessId, speaker, today, escalationNote }
 function buildSystem(input) {
   const business = (input.profile.businesses || []).find((b) => b.id === input.businessId) || null;
   const sector = sectorFile(business ? business.sector : "other");
 
   const stable = [
     section("agent_instructions", read(AGENT_FILES[input.agent])),
+    input.task ? section("task_instructions", read(TASKS[input.task].file)) : null,
     section("sector_notes", read(sector)),
     ...REFERENCE_FILES.map((file) => section("reference file=\"" + file + "\"", read(file)))
-  ].join("\n\n");
+  ].filter(Boolean).join("\n\n");
 
   const language = input.profile.meta && input.profile.meta.language === "en" ? "English" : "Hebrew";
   const turn = [
@@ -61,4 +69,4 @@ function buildSystem(input) {
   ];
 }
 
-module.exports = { buildSystem, forClaude, read };
+module.exports = { buildSystem, forClaude, read, taskSchema };
