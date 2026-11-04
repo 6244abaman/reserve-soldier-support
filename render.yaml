@@ -4,7 +4,7 @@
 services:
   # The proxy: the only place the Claude API key lives.
   - type: web
-    name: momentum-proxy
+    name: rss-proxy
     runtime: node
     plan: free
     branch: first-build          # switch to main once the build is approved
@@ -17,12 +17,12 @@ services:
       - key: ALLOWED_ORIGINS     # only the app's own web address may call the proxy
         fromService:
           type: web
-          name: momentum-app
+          name: rss-app
           property: host
 
   # The app itself (plain HTML, CSS, and JavaScript from the app/ folder).
   - type: web
-    name: momentum-app
+    name: rss-app
     runtime: static
     branch: first-build
     buildCommand: echo "No build step"
