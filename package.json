@@ -1,0 +1,9 @@
+{
+  "name": "reserve-soldier-support",
+  "private": true,
+  "description": "Momentum: helps Israeli reservists restart their businesses after long military service.",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build:schema": "node scripts/build-schema.js"
+  }
+}

@@ -1,0 +1,631 @@
+// GENERATED from schema/recovery-profile.json by scripts/build-schema.js.
+// Do not edit by hand. Change the schema file, then run: npm run build:schema
+(function (root) {
+  var schema = {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Momentum Recovery Profile",
+    "type": "object",
+    "required": [
+      "meta",
+      "person",
+      "service",
+      "businesses"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "meta": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "profileId": {
+            "type": "string"
+          },
+          "language": {
+            "enum": [
+              "he",
+              "en"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "intakeComplete": {
+            "type": "boolean"
+          },
+          "unconfirmedFields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "person": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "familySituation": {
+            "type": "string"
+          },
+          "checkInDay": {
+            "enum": [
+              "sun",
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat"
+            ]
+          },
+          "preferredChannel": {
+            "enum": [
+              "email",
+              "sms",
+              "whatsapp"
+            ]
+          },
+          "consentToContact": {
+            "type": "boolean"
+          }
+        }
+      },
+      "service": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "roleGeneral": {
+            "type": "string"
+          },
+          "reserveDaysLastTwoYears": {
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "home",
+              "called_up",
+              "expecting_call_up"
+            ]
+          },
+          "callUpStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "callUpEnd": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "cover": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "relationship": {
+            "type": "string"
+          },
+          "contact": {
+            "type": "string"
+          },
+          "allowedTasks": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "answer_customers",
+                "send_followups",
+                "monitor_only"
+              ]
+            }
+          },
+          "sharedBusinessIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "soldierConsentDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "coverAgreed": {
+            "type": "boolean"
+          },
+          "accessEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "handoverBrief": {
+            "type": "string"
+          },
+          "returnSummary": {
+            "type": "string"
+          }
+        }
+      },
+      "businesses": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "sector"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "sector": {
+              "enum": [
+                "food_hospitality",
+                "retail_ecommerce",
+                "trades_construction",
+                "professional_services",
+                "tech_creative",
+                "health_personal_care",
+                "transport_logistics",
+                "other"
+              ]
+            },
+            "yearsOperating": {
+              "type": "number"
+            },
+            "employees": {
+              "type": "number"
+            },
+            "numbers": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "monthlyRevenueBefore": {
+                  "type": "number"
+                },
+                "monthlyRevenueNow": {
+                  "type": "number"
+                },
+                "fixedMonthlyCosts": {
+                  "type": "number"
+                },
+                "cashOnHand": {
+                  "type": "number"
+                },
+                "monthsOfCashLeft": {
+                  "type": "number"
+                },
+                "debts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "overdue": {
+                        "type": "boolean"
+                      },
+                      "deadline": {
+                        "type": "string",
+                        "format": "date"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "customers": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "regularCount": {
+                  "type": "number"
+                },
+                "lostDuringService": {
+                  "type": "number"
+                },
+                "sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "list": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "group": {
+                        "enum": [
+                          "active",
+                          "lapsed",
+                          "open_quote",
+                          "warm_lead"
+                        ]
+                      },
+                      "lastContact": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "lastOrder": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "note": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "pricing": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "method": {
+                  "type": "string"
+                },
+                "marginPercent": {
+                  "type": "number"
+                },
+                "floorPrice": {
+                  "type": "number"
+                },
+                "targetPrice": {
+                  "type": "number"
+                },
+                "walkAwayPrice": {
+                  "type": "number"
+                },
+                "inputsSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "capacity": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "hoursPerWeek": {
+                  "type": "number"
+                },
+                "whoRunsItWhenAway": {
+                  "type": "string"
+                }
+              }
+            },
+            "benefitsUsed": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "diagnosis": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "completedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "topProblems": {
+                  "type": "array",
+                  "maxItems": 3,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "problem": {
+                        "type": "string"
+                      },
+                      "evidence": {
+                        "type": "string"
+                      },
+                      "confidence": {
+                        "enum": [
+                          "low",
+                          "medium",
+                          "high"
+                        ]
+                      },
+                      "urgent": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                },
+                "unknowns": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "plan": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "summary": {
+                  "type": "string"
+                },
+                "priorities": {
+                  "type": "array",
+                  "maxItems": 3,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "goal": {
+                        "type": "string"
+                      },
+                      "actions": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {
+                            "action": {
+                              "type": "string"
+                            },
+                            "dueDate": {
+                              "type": "string",
+                              "format": "date"
+                            },
+                            "status": {
+                              "enum": [
+                                "not_started",
+                                "in_progress",
+                                "done",
+                                "blocked",
+                                "dropped"
+                              ]
+                            },
+                            "note": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "successMeasure": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "openQuestions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "marketing": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "idealCustomer": {
+                  "type": "string"
+                },
+                "idealCustomerConfirmed": {
+                  "type": "boolean"
+                },
+                "channels": {
+                  "type": "array",
+                  "maxItems": 3,
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "weeklyTarget": {
+                  "type": "string"
+                },
+                "drafts": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "contentCalendar": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "plannedDate": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "channel": {
+                        "type": "string"
+                      },
+                      "postType": {
+                        "enum": [
+                          "showing_work",
+                          "helping_customer",
+                          "invitation"
+                        ]
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "imageNote": {
+                        "type": "string"
+                      },
+                      "approval": {
+                        "enum": [
+                          "draft",
+                          "approved",
+                          "posted",
+                          "dropped"
+                        ]
+                      },
+                      "postedBy": {
+                        "enum": [
+                          "soldier",
+                          "cover"
+                        ]
+                      },
+                      "replies": {
+                        "type": "number"
+                      },
+                      "messages": {
+                        "type": "number"
+                      },
+                      "resultNote": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "results": {
+                  "type": "string"
+                }
+              }
+            },
+            "followUpLog": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "customer": {
+                    "type": "string"
+                  },
+                  "sentBy": {
+                    "enum": [
+                      "soldier",
+                      "cover"
+                    ]
+                  },
+                  "outcome": {
+                    "enum": [
+                      "sent",
+                      "replied",
+                      "ordered",
+                      "no_answer",
+                      "stopped"
+                    ]
+                  },
+                  "attempt": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "goals": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "threeMonthOutcome": {
+            "type": "string"
+          }
+        }
+      },
+      "checkIns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date"
+            },
+            "answeredBy": {
+              "enum": [
+                "soldier",
+                "cover"
+              ]
+            },
+            "done": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "blockers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nextActions": {
+              "type": "array",
+              "maxItems": 3,
+              "items": {
+                "type": "string"
+              }
+            },
+            "result": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "flags": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "mentorEscalation": {
+            "type": "boolean"
+          },
+          "escalationReason": {
+            "type": "string"
+          },
+          "missedCheckIns": {
+            "type": "number"
+          },
+          "nudgesPaused": {
+            "type": "boolean"
+          },
+          "lastNudgeSent": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  };
+  if (typeof module === "object" && module.exports) module.exports = schema;
+  else root.MomentumProfileSchema = schema;
+})(this);
