@@ -179,6 +179,12 @@
             "name": {
               "type": "string"
             },
+            "description": {
+              "type": "string"
+            },
+            "biggestPain": {
+              "type": "string"
+            },
             "sector": {
               "enum": [
                 "food_hospitality",

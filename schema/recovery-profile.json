@@ -70,6 +70,8 @@
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
+          "description": { "type": "string" },
+          "biggestPain": { "type": "string" },
           "sector": {
             "enum": [
               "food_hospitality", "retail_ecommerce", "trades_construction",
