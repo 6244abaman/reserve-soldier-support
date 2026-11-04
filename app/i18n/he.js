@@ -124,7 +124,7 @@ window.MOMENTUM_I18N.he = {
   "done.title": "תודה, {name}. הכול נשמר.",
   "done.titleNoName": "תודה. הכול נשמר.",
   "done.body": "השלב הבא הוא בדיקה קצרה של {business}, כדי להבין מה הכי חשוב לטפל בו עכשיו.",
-  "done.review": "לצפייה בתשובות",
+  "done.review": "לראות או לתקן את התשובות שלי",
 
   "h1.title": "תודה שסיפרת לי",
   "h1.body": "זה חשוב, ומגיעה לך תמיכה מאדם אמיתי עכשיו.",
@@ -137,7 +137,7 @@ window.MOMENTUM_I18N.he = {
   "h2.continue": "להמשיך בשאלות",
 
   "done.continue": "המשך",
-  "next.back": "חזרה לתשובות שלי",
+  "next.back": "לראות או לתקן את התשובות שלי",
   "next.default": "חזרה לשלב הבא שלי",
 
   "router.intake": "נתחיל בהיכרות קצרה איתך ועם העסק.",
@@ -168,7 +168,7 @@ window.MOMENTUM_I18N.he = {
   "test.agent": "קובץ הסוכן",
   "test.business": "עסק",
   "test.sector": "קובץ התחום",
-  "test.try": "לנסות בקשה מסוימת:",
+  "test.try": "כפתורים לבדיקה בלבד: הם מראים איזה קובץ ייטען. הנושאים עצמם יעבדו בשלב 8 של הבנייה.",
   "test.reset": "להתחיל מחדש (לבדיקה בלבד)",
   "test.resetConfirm": "לחיצה נוספת תמחק את התשובות בטלפון הזה",
 
@@ -292,5 +292,14 @@ window.MOMENTUM_I18N.he = {
   "ai.checkin.resultTitle": "סיכום השבוע",
   "ai.checkin.next": "לשבוע הבא",
   "ai.checkin.review": "ייתכן שהתוכנית צריכה שינוי.",
-  "ai.checkin.confirm": "נשמע נכון"
+  "ai.checkin.confirm": "נשמע נכון",
+  "nav.homeButton": "בית",
+  "nav.homeLabel": "לדף הבית: הצעד הבא שלך",
+  "nav.home": "לדף הבית",
+  "nav.prevQuestion": "לשאלה הקודמת",
+  "nav.toSummary": "חזרה לסיכום",
+  "nav.backNoSave": "לדף הבית, בלי לשמור",
+  "nav.backNoSend": "לדף הבית, בלי לשלוח",
+  "next.eyebrow": "הצעד הבא שלך",
+  "next.homeHint": "תמיד אפשר לחזור לכאן עם הכפתור \"בית\" למעלה."
 };

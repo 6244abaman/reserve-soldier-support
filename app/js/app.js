@@ -115,8 +115,24 @@
       else if (view.name === "agent") showNextStep(null);   // do not re-send to Claude just for a language switch
       else window.MomentumIntakeUI.render();
       renderTesting();
+      updateHome();
     });
   });
+
+  // ---------- Home button ----------
+  // Shown once Intake is finished; always leads to the page with the next step.
+
+  var homeBtn = document.getElementById("home-btn");
+
+  function updateHome() {
+    var p = profile();
+    homeBtn.hidden = !(p && p.meta && p.meta.intakeComplete);
+    homeBtn.setAttribute("aria-label", t("nav.homeLabel"));
+  }
+
+  homeBtn.addEventListener("click", function () { showNextStep(null); });
+  new MutationObserver(updateHome).observe(mount, { childList: true });
+  updateHome();
 
   // ---------- Testing only: Start over ----------
 

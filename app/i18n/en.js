@@ -124,7 +124,7 @@ window.MOMENTUM_I18N.en = {
   "done.title": "Thank you, {name}. Everything is saved.",
   "done.titleNoName": "Thank you. Everything is saved.",
   "done.body": "The next step is a short check of {business}, to see what matters most to handle now.",
-  "done.review": "See my answers",
+  "done.review": "See or change my answers",
 
   "h1.title": "Thank you for telling me",
   "h1.body": "This matters, and you deserve support from a person right now.",
@@ -137,7 +137,7 @@ window.MOMENTUM_I18N.en = {
   "h2.continue": "Continue the questions",
 
   "done.continue": "Continue",
-  "next.back": "Back to my answers",
+  "next.back": "See or change my answers",
   "next.default": "Back to my next step",
 
   "router.intake": "Let's start by getting to know you and your business.",
@@ -168,7 +168,7 @@ window.MOMENTUM_I18N.en = {
   "test.agent": "Agent file",
   "test.business": "Business",
   "test.sector": "Sector file",
-  "test.try": "Try a specific request:",
+  "test.try": "Testing buttons only: they show which file would be used. The topics themselves work from build phase 8.",
   "test.reset": "Start over (testing only)",
   "test.resetConfirm": "Tap again to delete the answers on this phone",
 
@@ -292,5 +292,14 @@ window.MOMENTUM_I18N.en = {
   "ai.checkin.resultTitle": "This week",
   "ai.checkin.next": "For next week",
   "ai.checkin.review": "The plan may need to change.",
-  "ai.checkin.confirm": "Sounds right"
+  "ai.checkin.confirm": "Sounds right",
+  "nav.homeButton": "Home",
+  "nav.homeLabel": "Go to Home: your next step",
+  "nav.home": "Go to Home",
+  "nav.prevQuestion": "Previous question",
+  "nav.toSummary": "Back to the summary",
+  "nav.backNoSave": "Go to Home without saving",
+  "nav.backNoSend": "Go to Home without sending",
+  "next.eyebrow": "Your next step",
+  "next.homeHint": "You can always come back here with the Home button at the top."
 };

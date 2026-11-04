@@ -208,7 +208,7 @@
     formEl.appendChild(saveError);
     formEl.appendChild(el("div", { class: "actions" },
       el("button", { type: "submit", class: "btn-primary", text: t("d.save") }),
-      el("button", { type: "button", class: "btn-quiet", text: t("back"), onclick: options.onBack })));
+      el("button", { type: "button", class: "btn-quiet", text: t("nav.backNoSave"), onclick: options.onBack })));
 
     mount.textContent = "";
     mount.appendChild(el("div", { class: "message" },

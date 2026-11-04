@@ -243,7 +243,8 @@
     return el("button", { type: "button", class: "back", onclick: function () {
       if (state.editing) state.editing = false;
       go(prev);
-    } }, el("span", { class: "back-arrow", "aria-hidden": "true", text: lang() === "he" ? "→" : "←" }), t("back"));
+    } }, el("span", { class: "back-arrow", "aria-hidden": "true", text: lang() === "he" ? "→" : "←" }),
+      t(state.editing ? "nav.toSummary" : "nav.prevQuestion"));
   }
 
   // ---------- summary ----------

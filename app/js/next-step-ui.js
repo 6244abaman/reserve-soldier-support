@@ -23,7 +23,11 @@
     var business = r.businessId ? profile.businesses.filter(function (b) { return b.id === r.businessId; })[0] : null;
     var formSent = r.agent === "diagnostic" && root.MomentumDiagnosticForm.awaitingFindings(business);
     var title = formSent ? fill(t("next.formDone"), r.say.vars) : fill(t(r.say.key), r.say.vars);
-    var parts = [el("h1", { tabindex: "-1", text: title })];
+    // Home: the page with the soldier's next step. A specific topic shows its own title instead.
+    var parts = [
+      options.request ? null : el("p", { class: "eyebrow", text: t("next.eyebrow") }),
+      el("h1", { tabindex: "-1", text: title })
+    ];
 
     // The three main steps: Diagnostic (form, then findings), Recovery Plan, weekly check-in.
     function button(primary, key, onclick) {
@@ -70,9 +74,11 @@
     }
 
     parts.push(el("div", { class: "actions" },
-      options.request ? el("button", { type: "button", class: r.agent === "ask_business" ? "btn-quiet" : "btn-primary", text: t("next.default"),
+      options.request ? el("button", { type: "button", class: r.agent === "ask_business" ? "btn-quiet" : "btn-primary", text: t("nav.home"),
         onclick: function () { again(null); } }) : null,
       el("button", { type: "button", class: "btn-quiet", text: t("next.back"), onclick: options.onBack })));
+
+    if (!options.request) parts.push(el("p", { class: "soft-note", text: t("next.homeHint") }));
 
     mount.textContent = "";
     mount.appendChild(el("div", { class: "message next-step" }, parts));

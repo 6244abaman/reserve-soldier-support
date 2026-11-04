@@ -87,7 +87,7 @@
         el("p", { class: "lead", text: t(key) }),
         el("div", { class: "actions" },
           canRetry ? el("button", { type: "button", class: "btn-primary", text: t("ai.retry"), onclick: call }) : null,
-          el("button", { type: "button", class: "btn-quiet", text: t("back"), onclick: ctx.onBack }))
+          el("button", { type: "button", class: "btn-quiet", text: t("nav.home"), onclick: ctx.onBack }))
       ]);
     }
 
@@ -254,7 +254,7 @@
         el("label", { class: "d-label", for: "ci-more", text: t("ai.checkin.more") }), more,
         el("div", { class: "actions" },
           el("button", { type: "submit", class: "btn-primary", text: t("ai.send") }),
-          el("button", { type: "button", class: "btn-quiet", text: t("back"), onclick: ctx.onBack })))));
+          el("button", { type: "button", class: "btn-quiet", text: t("nav.backNoSend"), onclick: ctx.onBack })))));
     window.scrollTo(0, 0);
     ctx.mount.querySelector("h1").focus();
 
