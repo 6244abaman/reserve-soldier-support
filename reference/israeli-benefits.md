@@ -38,7 +38,7 @@ These are the places the weekly check visits and the agents may point soldiers t
 |---|---|
 | Israel Tax Authority (רשות המסים בישראל): reservist business grants | Compensation for business revenue lost because of reserve service: eligibility, application links, deadlines |
 | Maof / Small and Medium Business Agency (מעוף - הסוכנות לעסקים קטנים): reservist support | Free business consulting for eligible reservists, and programs for marketing, sales, financial recovery |
-| IDF Reservists Portal (את"צ): the Assistance Fund | Additional economic-loss assistance, including cases reviewed after Tax Authority compensation is exhausted |
+| IDF Reservists Portal (את"צ): the Assistance Fund, https://www.miluim.idf.il/ | Additional economic-loss assistance, including cases reviewed after Tax Authority compensation is exhausted |
 | Jewish Agency (הסוכנות היהודית לארץ ישראל): reservist assistance | Subsidized loans and business mentoring |
 | Daf Hadash (via the Small Business Agency, הסוכנות לעסקים קטנים): financial rehabilitation | Free financial and business guidance, debt advice, help claiming entitlements, for eligible reservists and spouses |
 | Keren Nathan: reservist business loans | Interest-free financing for eligible new businesses established from 2024, including reservists' and spouses' businesses |
@@ -69,7 +69,7 @@ _No verified entries yet._
 - How to apply: Through the IDF Reservists Portal (link to be added)
 - Documents usually needed: not recorded yet
 - Deadlines: none recorded
-- Source link: to be added from the official page
+- Source link: https://www.miluim.idf.il/ (the portal's home page, given by Aba on 2026-11-05; the Assistance Fund page itself is still to be found)
 - Last checked: not yet checked by a team member
 - Review by: when first verified
 - Status: unverified
