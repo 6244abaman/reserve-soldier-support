@@ -57,6 +57,7 @@
         "soldierConsentDate": { "type": "string", "format": "date" },
         "coverAgreed": { "type": "boolean" },
         "accessEndDate": { "type": "string", "format": "date" },
+        "agreedDate": { "type": "string", "format": "date" },
         "handoverBrief": { "type": "string" },
         "returnSummary": { "type": "string" }
       }
@@ -315,7 +316,10 @@
         "escalationReason": { "type": "string" },
         "missedCheckIns": { "type": "number" },
         "nudgesPaused": { "type": "boolean" },
-        "lastNudgeSent": { "type": "string", "format": "date-time" }
+        "lastNudgeSent": { "type": "string", "format": "date-time" },
+        "awaitingReturnChoice": { "type": "boolean" },
+        "lightMessageOptIn": { "type": "boolean" },
+        "lightMessageSentAt": { "type": "string", "format": "date-time" }
       }
     }
   }

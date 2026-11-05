@@ -66,8 +66,50 @@
       },
       onOpenDiagnostic: showDiagnostic,
       onOpen: showAgent,
-      onOpenTopic: showTopic
+      onOpenTopic: showTopic,
+      lang: function () { return lang; },
+      onCallUp: showCallUp,
+      onReturn: function () { saveAndHome(window.MomentumReserveDuty.markReturn(profile(), today())); },
+      onReturnChoice: returnChoice,
+      onLightMessage: function (on) { saveOnly(window.MomentumReserveDuty.setLightMessage(profile(), on)); }
     });
+  }
+
+  // ---------- Reserve duty (Phase 7) ----------
+
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  function saveOnly(p) {
+    var r = store.save(p);
+    if (r.ok) current = r.profile;
+    else if (window.console) console.warn("Not saved", r.errors);
+    return r.ok;
+  }
+
+  function saveAndHome(p) { saveOnly(p); showNextStep(null); }
+
+  // After a "fresh look" on return, the new findings lead straight to a new plan.
+  var planAfterFindings = null;
+
+  function showCallUp() {
+    view = { name: "callup" };
+    window.MomentumReserveDutyUI.callUpForm({
+      mount: mount, t: t, lang: function () { return lang; }, profile: profile(),
+      onSave: saveAndHome,
+      onBack: function () { showNextStep(null); }
+    });
+  }
+
+  function returnChoice(choice, businessId) {
+    var RD = window.MomentumReserveDuty;
+    if (choice === "pick_up") return saveAndHome(RD.pickUp(profile()));
+    saveOnly(RD.finishReturn(profile()));
+    if (choice === "new_plan") return showAgent("plan", businessId);
+    planAfterFindings = businessId;           // fresh_look: the Diagnostic form first
+    showDiagnostic(businessId);
   }
 
   // A conversation about one topic with that module's agent.
@@ -96,7 +138,11 @@
       store: store,
       profile: profile(),
       businessId: businessId,
-      onDone: function (saved) { current = saved; showNextStep(null); },
+      onDone: function (saved) {
+        current = saved;
+        if (step === "findings" && planAfterFindings === businessId) { planAfterFindings = null; return showAgent("plan", businessId); }
+        showNextStep(null);
+      },
       onBack: function () { showNextStep(null); }
     });
   }
@@ -128,6 +174,7 @@
       applyLang(btn.dataset.lang);
       saveLang(btn.dataset.lang);
       if (view.name === "next") showNextStep(view.request);
+      else if (view.name === "callup") showCallUp();
       else if (view.name === "diagnostic") showDiagnostic(view.businessId);
       else if (view.name === "agent" || view.name === "topic") showNextStep(null);   // do not re-send to Claude just for a language switch
       else window.MomentumIntakeUI.render();

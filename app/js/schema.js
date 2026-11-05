@@ -154,6 +154,10 @@
             "type": "string",
             "format": "date"
           },
+          "agreedDate": {
+            "type": "string",
+            "format": "date"
+          },
           "handoverBrief": {
             "type": "string"
           },
@@ -687,6 +691,16 @@
             "type": "boolean"
           },
           "lastNudgeSent": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "awaitingReturnChoice": {
+            "type": "boolean"
+          },
+          "lightMessageOptIn": {
+            "type": "boolean"
+          },
+          "lightMessageSentAt": {
             "type": "string",
             "format": "date-time"
           }

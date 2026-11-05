@@ -1,6 +1,8 @@
 // The screen between steps: asks the Router what comes next and offers it
 // (the Diagnostic form and findings, the Recovery Plan, or the weekly
-// check-in), plus the seven topics, with one or two suggested from the answers. The "Testing" box shows how the Router decided, which is
+// check-in), plus the seven topics, with one or two suggested from the answers.
+// During a call-up, and right after the return, Home shows the reserve duty
+// card instead of the next step (reserve-duty-ui.js). The "Testing" box shows how the Router decided, which is
 // back-office detail, so it appears only while testing mode is on.
 (function (root) {
   "use strict";
@@ -8,8 +10,11 @@
   var el = root.MomentumDom.el;
   var fill = root.MomentumDom.fill;
   var Router = root.MomentumRouter;
+  var RD = root.MomentumReserveDuty;
+  var RDUI = root.MomentumReserveDutyUI;
 
-  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId), onOpen(step, businessId), onOpenTopic(topic, businessId) }
+  // options: { mount, profile, t, lang(), request, testing, onBack, onOpenDiagnostic(businessId), onOpen(step, businessId),
+  //            onOpenTopic(topic, businessId), onCallUp(), onReturn(), onReturnChoice(choice, businessId), onLightMessage(on) }
   function show(options) {
     var t = options.t;
     var profile = options.profile;
@@ -35,21 +40,31 @@
       el("h1", { tabindex: "-1", text: title })
     ];
 
+    // Reserve duty: the plan is frozen while away; on return, a soft welcome back.
+    var started = profile.meta && profile.meta.intakeComplete;
+    var dutyMode = !options.request && started && (RD.onDuty(profile) || RD.awaitingReturn(profile));
+    if (dutyMode) {
+      parts = [el("p", { class: "eyebrow", text: t("next.eyebrow") })].concat(RD.onDuty(profile)
+        ? RDUI.awayCard({ t: t, lang: options.lang, profile: profile, onReturn: options.onReturn,
+            onCheckin: function () { options.onOpen("checkin", null); }, onLightMessage: options.onLightMessage })
+        : RDUI.returnCard({ t: t, profile: profile, onChoice: options.onReturnChoice }));
+    }
+
     // The three main steps: Diagnostic (form, then findings), Recovery Plan, weekly check-in.
     function button(primary, key, onclick) {
       return el("button", { type: "button", class: primary ? "btn-primary" : "btn-quiet", text: t(key), onclick: onclick });
     }
-    if (r.agent === "diagnostic") {
+    if (!dutyMode && r.agent === "diagnostic") {
       parts.push(el("p", { class: "lead", text: t(formSent ? "next.formDoneLead" : "next.diagnosticLead") }));
       parts.push(el("div", { class: "actions" },
         formSent ? button(true, "next.findings", function () { options.onOpen("findings", r.businessId); }) : null,
         button(!formSent, formSent ? "next.editForm" : "next.start", function () { options.onOpenDiagnostic(r.businessId); })));
     }
-    if (r.agent === "recovery_plan") {
+    if (!dutyMode && r.agent === "recovery_plan") {
       parts.push(el("p", { class: "lead", text: t("next.planLead") }));
       parts.push(el("div", { class: "actions" }, button(true, "next.planStart", function () { options.onOpen("plan", r.businessId); })));
     }
-    if (r.agent === "accountability") {
+    if (!dutyMode && r.agent === "accountability") {
       parts.push(el("p", { class: "lead", text: t("next.checkinLead") }));
       parts.push(el("div", { class: "actions" }, button(true, "next.checkinStart", function () { options.onOpen("checkin", null); })));
     }
@@ -62,7 +77,7 @@
       })));
     }
 
-    if (options.testing && r.agent !== "ask_business") {
+    if (options.testing && !dutyMode && r.agent !== "ask_business") {
       var url = (root.MOMENTUM_CONFIG && root.MOMENTUM_CONFIG.proxyUrl) || "";
       var built = ["diagnostic", "recovery_plan", "accountability"].indexOf(r.agent) !== -1;
       var name = r.businessId ? (profile.businesses.filter(function (b) { return b.id === r.businessId; })[0] || {}).name : null;
@@ -99,6 +114,12 @@
         el("div", { class: "module-buttons" }, Router.MODULES.map(function (m) {
           return el("button", { type: "button", class: "chip", onclick: function () { again({ agent: m }); } }, t("mod." + m));
         }))));
+    }
+
+    // "Called up for reserve duty?" (not shown while away or right after the return)
+    if (!options.request && started && !dutyMode) {
+      parts.push(RDUI.callUpEntry({ t: t, profile: profile, onCallUp: options.onCallUp,
+        onPrepare: function () { again({ agent: "time_capacity" }); } }));
     }
 
     if (!options.request) parts.push(el("p", { class: "soft-note", text: t("next.homeHint") }));

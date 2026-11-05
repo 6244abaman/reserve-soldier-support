@@ -6,7 +6,8 @@
 // blocked two weeks in a row, which flags a mentor (escalation Level 3).
 //
 // The check-in conversation itself needs Claude and comes in Phase 6b.
-// Reserve duty pauses come in Phase 7.
+// During a marked call-up the check-in is lighter: only the one most
+// important action (agents/accountability.md, "Keeping the plan alive").
 //
 // Works in the browser (window.MomentumAccountability) and in Node tests (require).
 (function (root) {
@@ -42,16 +43,18 @@
     return out;
   }
 
-  // The actions for this week: at most three in total, across all businesses.
-  // Earliest due date first; actions without a date come last; ties keep plan order.
+  // The actions for this week: at most three in total, across all businesses,
+  // or only one during a call-up. Earliest due date first; actions without a
+  // date come last; ties keep plan order.
   function weeklyActions(profile) {
+    var limit = profile.service && profile.service.status === "called_up" ? 1 : WEEKLY_LIMIT;
     var list = openActions(profile).map(function (a, i) { return { a: a, i: i }; });
     list.sort(function (x, y) {
       var dx = x.a.dueDate || "9999-12-31";
       var dy = y.a.dueDate || "9999-12-31";
       return dx < dy ? -1 : dx > dy ? 1 : x.i - y.i;
     });
-    return list.slice(0, WEEKLY_LIMIT).map(function (x) { return x.a; });
+    return list.slice(0, limit).map(function (x) { return x.a; });
   }
 
   // ref: { businessId, source, priority or topic, index } (source defaults to "plan").

@@ -661,3 +661,11 @@ h2.q-label { margin: 0; }
 .chat-problem { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; color: var(--danger); font-weight: 600; }
 .chat-problem p { margin: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Reserve duty (Phase 7) ---------- */
+
+.reserve-duty .diagnostic { gap: 1rem; }
+.rd-light { align-items: flex-start; line-height: 1.45; }
+.rd-light input { flex: none; margin-top: 0.15rem; }
+.rd-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; text-align: start; }
+.rd-choice strong { font-size: var(--text-md); }
