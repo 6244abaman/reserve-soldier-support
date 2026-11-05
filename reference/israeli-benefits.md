@@ -41,7 +41,7 @@ These are the places the weekly check visits and the agents may point soldiers t
 | IDF Reservists Portal (את"צ): the Assistance Fund, https://www.miluim.idf.il/ | Additional economic-loss assistance, including cases reviewed after Tax Authority compensation is exhausted |
 | Jewish Agency (הסוכנות היהודית לארץ ישראל): reservist assistance | Subsidized loans and business mentoring |
 | Daf Hadash (via the Small Business Agency, הסוכנות לעסקים קטנים): financial rehabilitation | Free financial and business guidance, debt advice, help claiming entitlements, for eligible reservists and spouses |
-| Keren Nathan: reservist business loans | Interest-free financing for eligible new businesses established from 2024, including reservists' and spouses' businesses |
+| Keren Nathan: reservist business loans, https://nksf.org.il/miluim/ | Interest-free financing for eligible new businesses established from 2024, including reservists' and spouses' businesses |
 | momentum4u.org | To be described by Aba |
 
 ---
@@ -119,7 +119,7 @@ _No verified entries yet._
 - How to apply: Link to be added
 - Documents usually needed: not recorded yet
 - Deadlines: none recorded
-- Source link: to be added from the official page
+- Source link: https://nksf.org.il/miluim/ (given by Aba on 2026-11-05)
 - Last checked: not yet checked by a team member
 - Review by: when first verified
 - Status: unverified
