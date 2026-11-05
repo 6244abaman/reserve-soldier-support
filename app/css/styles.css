@@ -669,3 +669,18 @@ h2.q-label { margin: 0; }
 .rd-light input { flex: none; margin-top: 0.15rem; }
 .rd-choice { display: flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; text-align: start; }
 .rd-choice strong { font-size: var(--text-md); }
+
+/* ---------- Cover Person (Phase 7b) ---------- */
+
+.cover .d-section { display: flex; flex-direction: column; gap: 0.25rem; }
+.cover-check { align-items: flex-start; color: var(--ink); font-size: var(--text-md); line-height: 1.4; }
+.cover-check input { flex: none; margin-top: 0.15rem; }
+.cover textarea#cv-brief { min-height: 16rem; }
+.cover-send { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem; border: 1.5px solid var(--accent); border-radius: var(--radius); background: var(--surface); }
+.cover-send[hidden] { display: none; }
+.cover-send h2 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg); }
+.btn-link { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+.cover-box { display: flex; flex-direction: column; gap: 0.4rem; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.cover-box h2 { margin: 0; font-size: var(--text-md); font-weight: 700; }
+.cover-box p { margin: 0; }
+.chip.is-armed { border-color: var(--danger); color: var(--danger); }

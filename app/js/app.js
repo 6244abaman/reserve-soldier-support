@@ -71,7 +71,32 @@
       onCallUp: showCallUp,
       onReturn: function () { saveAndHome(window.MomentumReserveDuty.markReturn(profile(), today())); },
       onReturnChoice: returnChoice,
-      onLightMessage: function (on) { saveOnly(window.MomentumReserveDuty.setLightMessage(profile(), on)); }
+      onLightMessage: function (on) { saveOnly(window.MomentumReserveDuty.setLightMessage(profile(), on)); },
+      cover: {
+        onEdit: showCoverSetup,
+        onBrief: showCoverBrief,
+        onEnd: function () { saveAndHome(window.MomentumCover.endAccess(profile(), today())); }
+      }
+    });
+  }
+
+  // ---------- Cover Person (Phase 7b) ----------
+
+  function showCoverSetup() {
+    view = { name: "cover" };
+    window.MomentumCoverUI.setupForm({
+      mount: mount, t: t, lang: function () { return lang; }, profile: profile(),
+      onSave: function (p) { if (saveOnly(p)) showCoverBrief(); },
+      onBack: function () { showNextStep(null); }
+    });
+  }
+
+  function showCoverBrief() {
+    view = { name: "brief" };
+    window.MomentumCoverUI.briefScreen({
+      mount: mount, t: t, lang: function () { return lang; }, profile: profile(),
+      onSave: function (p) { return saveOnly(p) ? current : null; },
+      onBack: function () { showNextStep(null); }
     });
   }
 
@@ -175,6 +200,8 @@
       saveLang(btn.dataset.lang);
       if (view.name === "next") showNextStep(view.request);
       else if (view.name === "callup") showCallUp();
+      else if (view.name === "cover") showCoverSetup();
+      else if (view.name === "brief") showCoverBrief();
       else if (view.name === "diagnostic") showDiagnostic(view.businessId);
       else if (view.name === "agent" || view.name === "topic") showNextStep(null);   // do not re-send to Claude just for a language switch
       else window.MomentumIntakeUI.render();

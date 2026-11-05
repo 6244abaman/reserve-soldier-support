@@ -14,7 +14,8 @@
   var RDUI = root.MomentumReserveDutyUI;
 
   // options: { mount, profile, t, lang(), request, testing, onBack, onOpenDiagnostic(businessId), onOpen(step, businessId),
-  //            onOpenTopic(topic, businessId), onCallUp(), onReturn(), onReturnChoice(choice, businessId), onLightMessage(on) }
+  //            onOpenTopic(topic, businessId), onCallUp(), onReturn(), onReturnChoice(choice, businessId), onLightMessage(on),
+  //            cover: { onEdit(), onBrief(), onEnd() } }
   function show(options) {
     var t = options.t;
     var profile = options.profile;
@@ -46,7 +47,7 @@
     if (dutyMode) {
       parts = [el("p", { class: "eyebrow", text: t("next.eyebrow") })].concat(RD.onDuty(profile)
         ? RDUI.awayCard({ t: t, lang: options.lang, profile: profile, onReturn: options.onReturn,
-            onCheckin: function () { options.onOpen("checkin", null); }, onLightMessage: options.onLightMessage })
+            onCheckin: function () { options.onOpen("checkin", null); }, onLightMessage: options.onLightMessage, cover: options.cover })
         : RDUI.returnCard({ t: t, profile: profile, onChoice: options.onReturnChoice }));
     }
 
@@ -118,7 +119,7 @@
 
     // "Called up for reserve duty?" (not shown while away or right after the return)
     if (!options.request && started && !dutyMode) {
-      parts.push(RDUI.callUpEntry({ t: t, profile: profile, onCallUp: options.onCallUp,
+      parts.push(RDUI.callUpEntry({ t: t, lang: options.lang, profile: profile, onCallUp: options.onCallUp, cover: options.cover,
         onPrepare: function () { again({ agent: "time_capacity" }); } }));
     }
 

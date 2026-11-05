@@ -3,6 +3,7 @@
 //   awayCard     Home during a call-up: the plan is frozen, nothing is late
 //   returnCard   Home right after the return: pick up, new plan, or fresh look
 //   callUpEntry  the small "Called up for reserve duty?" section on Home
+// Both Home cards also show the Cover Person (cover-ui.js), or a way to name one.
 // Never asks about service experiences (CLAUDE.md rule 5).
 (function (root) {
   "use strict";
@@ -10,6 +11,16 @@
   var el = root.MomentumDom.el;
   var fill = root.MomentumDom.fill;
   var RD = root.MomentumReserveDuty;
+
+  // The Cover Person on Home: their summary, or a button to name one.
+  // cover: { onEdit(), onBrief(), onEnd() }
+  function coverPart(t, lang, profile, cover, asChip) {
+    if (!cover) return null;
+    var box = root.MomentumCoverUI.summaryBox({ t: t, lang: lang, profile: profile,
+      onEdit: cover.onEdit, onBrief: cover.onBrief, onEnd: cover.onEnd });
+    if (box || !asChip) return box;
+    return el("button", { type: "button", class: "chip", text: t("cover.entry"), onclick: cover.onEdit });
+  }
 
   function today() {
     var d = new Date();
@@ -67,7 +78,7 @@
     return (profile.businesses || []).some(function (b) { return b.plan && b.plan.priorities && b.plan.priorities.length; });
   }
 
-  // ctx: { t, lang(), profile, onReturn(), onCheckin(), onLightMessage(on) }
+  // ctx: { t, lang(), profile, onReturn(), onCheckin(), onLightMessage(on), cover }
   function awayCard(ctx) {
     var t = ctx.t;
     var p = ctx.profile;
@@ -81,7 +92,9 @@
       el("div", { class: "actions" },
         el("button", { type: "button", class: "btn-primary", text: t("rd.back"), onclick: ctx.onReturn }),
         hasOpenPlan(p) ? el("button", { type: "button", class: "btn-quiet", text: t("rd.lightCheckin"), onclick: ctx.onCheckin }) : null),
-      lightMessageBox(t, p.flags && p.flags.lightMessageOptIn, ctx.onLightMessage).node
+      lightMessageBox(t, p.flags && p.flags.lightMessageOptIn, ctx.onLightMessage).node,
+      coverPart(t, ctx.lang, p, ctx.cover, false) ||
+        (ctx.cover ? el("div", { class: "module-buttons" }, coverPart(t, ctx.lang, p, ctx.cover, true)) : null)
     ];
   }
 
@@ -136,16 +149,19 @@
     ];
   }
 
-  // ctx: { t, onCallUp(), onPrepare() }
+  // ctx: { t, lang(), profile, onCallUp(), onPrepare(), cover }
   function callUpEntry(ctx) {
     var t = ctx.t;
     var expecting = RD.expecting(ctx.profile);
+    var box = coverPart(t, ctx.lang, ctx.profile, ctx.cover, false);
     return el("section", { class: "topics rd-entry", "aria-labelledby": "rd-entry-title" },
       el("h2", { id: "rd-entry-title", text: t(expecting ? "rd.entryTitleSoon" : "rd.entryTitle") }),
       el("p", { class: "soft-note", text: t("rd.entryLead") }),
       el("div", { class: "module-buttons" },
         el("button", { type: "button", class: "chip", text: t("rd.entryStart"), onclick: ctx.onCallUp }),
-        el("button", { type: "button", class: "chip", text: t("rd.entryPrepare"), onclick: ctx.onPrepare })));
+        el("button", { type: "button", class: "chip", text: t("rd.entryPrepare"), onclick: ctx.onPrepare }),
+        box ? null : coverPart(t, ctx.lang, ctx.profile, ctx.cover, true)),
+      box);
   }
 
   root.MomentumReserveDutyUI = { callUpForm: callUpForm, awayCard: awayCard, returnCard: returnCard, callUpEntry: callUpEntry };
