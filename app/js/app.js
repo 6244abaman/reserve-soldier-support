@@ -65,7 +65,28 @@
         window.MomentumIntakeUI.showSummary(latest);
       },
       onOpenDiagnostic: showDiagnostic,
-      onOpen: showAgent
+      onOpen: showAgent,
+      onOpenModule: showModule
+    });
+  }
+
+  // A specific topic (pricing, cash flow, ...) as a chat. Afterwards the soldier
+  // goes back to the next step of the main flow, where they left off.
+  function showModule(agent, businessId) {
+    var same = view.name === "module" && view.agent === agent && view.businessId === businessId;
+    var state = same ? view.state : window.MomentumModuleUI.newState();
+    view = { name: "module", agent: agent, businessId: businessId, state: state };
+    window.MomentumModuleUI.show({
+      mount: mount,
+      t: t,
+      lang: function () { return lang; },
+      store: store,
+      profile: profile(),
+      agent: agent,
+      businessId: businessId,
+      state: state,
+      onSaved: function (saved) { current = saved; },
+      onBack: function () { showNextStep(null); }
     });
   }
 
@@ -113,6 +134,7 @@
       if (view.name === "next") showNextStep(view.request);
       else if (view.name === "diagnostic") showDiagnostic(view.businessId);
       else if (view.name === "agent") showNextStep(null);   // do not re-send to Claude just for a language switch
+      else if (view.name === "module") showModule(view.agent, view.businessId);   // keeps the chat
       else window.MomentumIntakeUI.render();
       renderTesting();
     });

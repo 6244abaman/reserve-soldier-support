@@ -251,3 +251,31 @@ test("every task file and answer shape exists and is valid JSON", () => {
     assert.strictEqual(schema.additionalProperties, false, t.schema);
   }
 });
+
+test("Phase 8: a module chat loads the module file and the chat note; the main agents do not", async () => {
+  const client = fakeClient();
+  await withServer({ client }, async (base) => {
+    const res = await post(base, request({ agent: "pricing", messages: [{ role: "user", content: "How much should I charge per day?" }] }));
+    assert.strictEqual(res.status, 200);
+    assert.strictEqual((await res.json()).reply, "Here is a short look at your numbers.");
+    await post(base, request());
+  });
+  const [moduleCall, diagnosticCall] = client.calls;
+  assert.match(moduleCall.system[0].text, /# Pricing module/);
+  assert.match(moduleCall.system[0].text, /<chat_instructions>[\s\S]*Nothing in this chat is saved/);
+  assert.match(moduleCall.system[0].text, /Trades and construction/);
+  assert.deepStrictEqual(moduleCall.output_config, { effort: "medium" });
+  assert.doesNotMatch(diagnosticCall.system[0].text, /chat_instructions/);
+});
+
+test("Phase 8: every module is accepted by the proxy and its prompt file exists", () => {
+  const fs = require("fs");
+  const path = require("path");
+  const { AGENT_FILES, MODULES, MODULE_CHAT_FILE } = require("../proxy/agents.js");
+  assert.strictEqual(MODULES.length, 7);
+  for (const m of MODULES) {
+    assert.ok(AGENT_FILES[m], m);
+    assert.ok(fs.existsSync(path.join(__dirname, "..", AGENT_FILES[m])), AGENT_FILES[m]);
+  }
+  assert.ok(fs.existsSync(path.join(__dirname, "..", MODULE_CHAT_FILE)));
+});

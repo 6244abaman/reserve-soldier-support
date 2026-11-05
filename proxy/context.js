@@ -8,7 +8,7 @@
 //   2. this turn: language, date, who is speaking, and the profile
 const fs = require("fs");
 const path = require("path");
-const { AGENT_FILES, REFERENCE_FILES, TASKS } = require("./agents");
+const { AGENT_FILES, REFERENCE_FILES, TASKS, MODULES, MODULE_CHAT_FILE } = require("./agents");
 const { sectorFile } = require("../app/js/router.js");
 
 const ROOT = path.join(__dirname, "..");
@@ -47,6 +47,7 @@ function buildSystem(input) {
   const stable = [
     section("agent_instructions", read(AGENT_FILES[input.agent])),
     input.task ? section("task_instructions", read(TASKS[input.task].file)) : null,
+    !input.task && MODULES.indexOf(input.agent) !== -1 ? section("chat_instructions", read(MODULE_CHAT_FILE)) : null,
     section("sector_notes", read(sector)),
     ...REFERENCE_FILES.map((file) => section("reference file=\"" + file + "\"", read(file)))
   ].filter(Boolean).join("\n\n");

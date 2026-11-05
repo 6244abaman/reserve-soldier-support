@@ -1,7 +1,8 @@
 // The screen between steps: asks the Router what comes next and offers it
 // (the Diagnostic form and findings, the Recovery Plan, or the weekly
-// check-in). The modules arrive in Phase 8. The "Testing" box shows how the Router decided, which is
-// back-office detail, so it appears only while testing mode is on.
+// check-in), plus the specific topics (the modules), which open a chat and
+// then come back here. The "Testing" box shows how the Router decided, which
+// is back-office detail, so it appears only while testing mode is on.
 (function (root) {
   "use strict";
 
@@ -9,12 +10,16 @@
   var fill = root.MomentumDom.fill;
   var Router = root.MomentumRouter;
 
-  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId), onOpen(step, businessId) }
+  // options: { mount, profile, t, request, testing, onBack, onOpenDiagnostic(businessId),
+  //            onOpen(step, businessId), onOpenModule(agent, businessId) }
   function show(options) {
     var t = options.t;
     var profile = options.profile;
     var r = Router.route(profile, { request: options.request || null });
     var mount = options.mount;
+
+    // A topic was chosen and the business is known: open its chat.
+    if (Router.MODULES.indexOf(r.agent) !== -1) return options.onOpenModule(r.agent, r.businessId);
 
     function again(request) {
       show(Object.assign({}, options, { request: request }));
@@ -52,9 +57,19 @@
       })));
     }
 
+    // A specific question always beats the default flow (CLAUDE.md, Flow).
+    if (r.agent === "diagnostic" || r.agent === "recovery_plan" || r.agent === "accountability") {
+      parts.push(el("section", { class: "topics", "aria-labelledby": "topics-title" },
+        el("h2", { id: "topics-title", text: t("next.topicsTitle") }),
+        el("p", { class: "soft-note", text: t("next.topicsLead") }),
+        el("div", { class: "module-buttons" }, Router.MODULES.map(function (m) {
+          return el("button", { type: "button", class: "chip", onclick: function () { again({ agent: m }); } }, t("mod." + m));
+        }))));
+    }
+
     if (options.testing && r.agent !== "ask_business") {
       var url = (root.MOMENTUM_CONFIG && root.MOMENTUM_CONFIG.proxyUrl) || "";
-      var built = ["diagnostic", "recovery_plan", "accountability"].indexOf(r.agent) !== -1;
+      var built = ["diagnostic", "recovery_plan", "accountability"].concat(Router.MODULES).indexOf(r.agent) !== -1;
       var name = r.businessId ? (profile.businesses.filter(function (b) { return b.id === r.businessId; })[0] || {}).name : null;
       parts.push(el("section", { class: "testing-box", "aria-label": t("test.title") },
         el("p", { class: "testing-title", text: t("test.title") }),
@@ -62,11 +77,7 @@
         el("dl", null,
           row(t("test.agent"), r.file),
           name != null ? row(t("test.business"), name || r.businessId) : null,
-          r.sectorFile ? row(t("test.sector"), r.sectorFile) : null),
-        el("p", { class: "testing-title", text: t("test.try") }),
-        el("div", { class: "module-buttons" }, Router.MODULES.map(function (m) {
-          return el("button", { type: "button", class: "chip", onclick: function () { again({ agent: m }); } }, t("mod." + m));
-        }))));
+          r.sectorFile ? row(t("test.sector"), r.sectorFile) : null)));
     }
 
     parts.push(el("div", { class: "actions" },
