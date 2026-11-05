@@ -703,6 +703,16 @@
           "lightMessageSentAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "mentorNotifiedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "mentorNotifiedFor": {
+            "type": "string"
+          },
+          "mentorContactApproved": {
+            "type": "boolean"
           }
         }
       }

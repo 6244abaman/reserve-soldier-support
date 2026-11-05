@@ -45,7 +45,7 @@
     return { box: box, node: el("label", { class: "estimate cover-check", for: id }, box, el("span", { text: text })) };
   }
 
-  // ctx: { mount, t, lang(), profile, onSave(profile), onBack }
+  // ctx: { mount, t, lang(), profile, onSave(profile), onFlag(profile), onBack }
   function setupForm(ctx) {
     var t = ctx.t;
     var p = ctx.profile;
@@ -93,6 +93,7 @@
         };
         var check3 = Esc.checkMessage([input.name, input.relationship].join("\n"), { from: "soldier" });
         if (check3.level === 1 || check3.level === 2) {
+          if (ctx.onFlag) ctx.onFlag(Esc.flagProfile(ctx.profile, Object.assign({ from: "soldier" }, check3)));
           ctx.mount.textContent = "";
           ctx.mount.appendChild(root.MomentumHandoffUI.build(check3.level, t, function () { setupForm(ctx); }));
           return;
@@ -128,7 +129,7 @@
     ]);
   }
 
-  // ctx: { mount, t, lang(), profile, onSave(profile), onBack }
+  // ctx: { mount, t, lang(), profile, onSave(profile), onFlag(profile), onBack }
   function briefScreen(ctx) {
     var t = ctx.t;
     var c = ctx.profile.cover || {};
@@ -161,6 +162,7 @@
         err.textContent = "";
         var check3 = Esc.checkMessage(box.value, { from: "soldier" });
         if (check3.level === 1 || check3.level === 2) {
+          if (ctx.onFlag) ctx.onFlag(Esc.flagProfile(ctx.profile, Object.assign({ from: "soldier" }, check3)));
           ctx.mount.textContent = "";
           ctx.mount.appendChild(root.MomentumHandoffUI.build(check3.level, t, function () { briefScreen(ctx); }));
           return;

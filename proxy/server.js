@@ -15,6 +15,7 @@ const schema = require("../app/js/schema.js");
 const { AGENT_FILES, TASKS, taskFits } = require("./agents");
 const { buildSystem, taskSchema } = require("./context");
 const { LIMITS, createRateLimiter } = require("./limits");
+const Alerts = require("./alerts");
 
 const MODEL = process.env.CLAUDE_MODEL || "claude-opus-5-5";
 
@@ -106,6 +107,11 @@ function createServer(options) {
   const allow = opts.rateLimiter || createRateLimiter();
   const today = opts.today || (() => new Date().toISOString().slice(0, 10));
   let client = opts.client || null;
+  // Mentor alerts: at most 10 per 10 minutes from one address, and never the same one twice a day.
+  const allowAlert = opts.alertRateLimiter || createRateLimiter({ limit: 10 });
+  const alertMemory = opts.alertMemory || Alerts.createAlertMemory();
+  const sendEmail = opts.sendEmail || Alerts.resendSender();
+  const alertsReady = opts.alertsReady || Alerts.ready;
 
   function getClient() {
     if (client) return client;
@@ -211,14 +217,49 @@ function createServer(options) {
     }
   }
 
+  // POST /api/alert: { level, reason, firstName, phone, contactApproved, profileId, language }
+  async function handleAlert(req, res, cors) {
+    const rate = allowAlert(callerKey(req));
+    if (!rate.ok) {
+      return send(res, 429, { error: "Too many alerts. Please wait a few minutes." },
+        Object.assign({ "Retry-After": String(rate.retryAfterSeconds) }, cors));
+    }
+    let body;
+    try { body = JSON.parse(await readBody(req)); } catch (e) {
+      return send(res, e.status === 413 ? 413 : 400, { error: "The request is not valid." }, cors);
+    }
+    const problem = Alerts.problemWithAlert(body);
+    if (problem) return send(res, 400, { error: problem }, cors);
+    if (!alertsReady()) {
+      log({ route: "alert", outcome: "not_set_up", level: body.level });
+      return send(res, 503, { error: "Mentor alerts are not set up yet." }, cors);
+    }
+    const key = (body.profileId || callerKey(req)) + "|" + body.reason + (body.phone ? "|phone" : "");
+    if (alertMemory.seen(key, Date.now())) return send(res, 200, { sent: true, repeat: true }, cors);
+
+    try {
+      const out = await sendEmail(Alerts.emailFor(body, new Date().toISOString()));
+      log({ route: "alert", outcome: out.ok ? "sent" : "failed", level: body.level, status: out.status });
+      if (!out.ok) return send(res, 502, { error: "The alert email could not be sent." }, cors);
+      alertMemory.remember(key, Date.now());
+      return send(res, 200, { sent: true }, cors);
+    } catch (e) {
+      log({ route: "alert", outcome: "error", level: body.level });
+      return send(res, 502, { error: "The alert email could not be sent." }, cors);
+    }
+  }
+
   return http.createServer((req, res) => {
     const cors = corsHeaders(req);
     if (req.method === "OPTIONS") { res.writeHead(204, cors); return res.end(); }
     if (req.method === "GET" && (req.url === "/" || req.url === "/health")) {
-      return send(res, 200, { ok: true, model: MODEL, ready: Boolean(opts.client || process.env.ANTHROPIC_API_KEY) }, cors);
+      return send(res, 200, { ok: true, model: MODEL, ready: Boolean(opts.client || process.env.ANTHROPIC_API_KEY), alerts: alertsReady() }, cors);
     }
     if (req.method === "POST" && req.url === "/api/agent") {
       return handleAgent(req, res, cors).catch(() => send(res, 500, { error: "Unexpected error." }, cors));
+    }
+    if (req.method === "POST" && req.url === "/api/alert") {
+      return handleAlert(req, res, cors).catch(() => send(res, 500, { error: "Unexpected error." }, cors));
     }
     send(res, 404, { error: "Not found." }, cors);
   });

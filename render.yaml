@@ -14,6 +14,10 @@ services:
     envVars:
       - key: ANTHROPIC_API_KEY
         sync: false              # Render asks you for it; it is never stored in this file
+      - key: RESEND_API_KEY      # mentor alert emails (resend.com); Render asks for it
+        sync: false
+      - key: MENTOR_EMAIL        # where alerts go; kept here, never in the code
+        sync: false
       - key: ALLOWED_ORIGINS     # only the app's own web address may call the proxy
         fromService:
           type: web

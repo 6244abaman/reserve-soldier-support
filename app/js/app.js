@@ -45,6 +45,18 @@
     schema: window.MomentumProfileSchema,
     validator: window.MomentumValidate
   });
+  // Every save checks for a new safety flag and emails the mentor (Phase 9).
+  window.MomentumMentorAlert.watch(store);
+  // Level 2 screen: the soldier agrees to share their phone with the mentor.
+  window.MomentumHandoffConsent = function () {
+    var p = profile();
+    if (!p || !p.person || !p.person.phone) return false;
+    // The screen that raised the flag saved it; start from that saved copy.
+    var latest = store.load(p.person.phone);
+    var r = store.approveMentorContact((latest.ok && latest.profile) || p);
+    if (r.ok) current = r.profile;
+    return r.ok;
+  };
 
   // The latest saved profile (Intake keeps its own copy while it runs).
   var current = null;
@@ -87,6 +99,7 @@
     window.MomentumCoverUI.setupForm({
       mount: mount, t: t, lang: function () { return lang; }, profile: profile(),
       onSave: function (p) { if (saveOnly(p)) showCoverBrief(); },
+      onFlag: saveOnly,
       onBack: function () { showNextStep(null); }
     });
   }
@@ -96,6 +109,7 @@
     window.MomentumCoverUI.briefScreen({
       mount: mount, t: t, lang: function () { return lang; }, profile: profile(),
       onSave: function (p) { return saveOnly(p) ? current : null; },
+      onFlag: saveOnly,
       onBack: function () { showNextStep(null); }
     });
   }

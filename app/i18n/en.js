@@ -411,5 +411,9 @@ window.MOMENTUM_I18N.en = {
   "cover.box.writeBrief": "Write a handover note",
   "cover.box.edit": "Edit",
   "cover.end.button": "End {name}'s access",
-  "cover.end.confirm": "Tap again to end access"
+  "cover.end.confirm": "Tap again to end access",
+
+  "h1.shared": "So that someone can get back to you, the mentor will get your name and phone number.",
+  "h2.share": "The mentor may have my phone number",
+  "h2.shared": "Thank you. The mentor will also get your phone number."
 };

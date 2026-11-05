@@ -34,6 +34,25 @@ If Render shows an error about `ALLOWED_ORIGINS`, open **rss-proxy → Environme
 
 Send both addresses (not the key) to whoever is building the app, so the app can be pointed at the proxy.
 
+## Mentor alert emails (once)
+
+When the safety check flags a soldier, the proxy emails the mentor through Resend.
+The email holds the level, the reason, the first name, and the phone number only
+at Level 1 or when the soldier agreed. Never the soldier's own words.
+
+1. Go to **resend.com** and sign up **with the email address that should receive the alerts**.
+   (Until you add your own domain in Resend, it can only send to that one address.)
+2. Open **API Keys → Create API Key**, give it a name like `momentum`, and copy the key (it starts with `re_`).
+3. In Render, open **rss-proxy → Environment** and add:
+   - `RESEND_API_KEY`: the key from step 2
+   - `MENTOR_EMAIL`: the address that should get alerts
+   Then **Save**. Render restarts the proxy by itself.
+4. Check: open the proxy address with `/health` at the end. You should see `"alerts":true`.
+
+Later, to send to other mentors: add and verify your domain in Resend (**Domains**), then add
+`ALERT_FROM` in Render, for example `Momentum <alerts@your-domain>`, and list several
+addresses in `MENTOR_EMAIL`, separated by commas.
+
 ## Changing the API key later
 
 **rss-proxy → Environment → ANTHROPIC_API_KEY → Edit → Save.** Render restarts the proxy by itself.
