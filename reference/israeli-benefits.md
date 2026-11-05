@@ -42,7 +42,7 @@ These are the places the weekly check visits and the agents may point soldiers t
 | Jewish Agency (הסוכנות היהודית לארץ ישראל): reservist assistance | Subsidized loans and business mentoring |
 | Daf Hadash (via the Small Business Agency, הסוכנות לעסקים קטנים): financial rehabilitation | Free financial and business guidance, debt advice, help claiming entitlements, for eligible reservists and spouses |
 | Keren Nathan: reservist business loans, https://nksf.org.il/miluim/ | Interest-free financing for eligible new businesses established from 2024, including reservists' and spouses' businesses |
-| momentum4u.org | To be described by Aba |
+| momentum4u.org, https://momentum4u.org/ | A website of programs for soldiers (as described by Aba). Look for programs that support reservists and their businesses, and check each against the official source of the program it lists |
 
 ---
 
