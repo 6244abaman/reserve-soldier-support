@@ -4,7 +4,7 @@ Render runs two services from this repository, both set up by `render.yaml`:
 
 | Service | What it is | Cost |
 |---|---|---|
-| `rss-proxy` | The proxy. The only place the Claude API key lives. | Free plan (sleeps after 15 minutes without use; the first request after that takes about a minute) |
+| `rss-proxy` | The proxy. The only place the Claude API key lives. | Starter plan (paid, about $7 a month; always awake) |
 | `rss-app` | The app (the `app/` folder) at its own web address. | Free |
 
 Claude itself is paid per message, from your Anthropic account. Set a monthly spending limit there first.

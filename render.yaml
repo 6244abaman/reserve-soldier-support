@@ -6,7 +6,7 @@ services:
   - type: web
     name: rss-proxy
     runtime: node
-    plan: free
+    plan: starter              # paid: stays awake, so the first message is not slow
     branch: main
     buildCommand: npm install --prefix proxy
     startCommand: node proxy/server.js
