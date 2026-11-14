@@ -4,6 +4,7 @@
   "description": "Momentum: helps Israeli reservists restart their businesses after long military service.",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "build:data": "node scripts/build-data.js"
+    "build:data": "node scripts/build-data.js",
+    "build:links": "node scripts/build-links.cjs"
   }
 }

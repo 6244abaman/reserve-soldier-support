@@ -1,0 +1,59 @@
+MOMENTUM BUSINESS REBUILD - OPEN, SHARE AND UPDATE
+
+OPEN AND SHARE: https://rss-app-2gwd.onrender.com/
+MANAGE APP: https://dashboard.render.com/static/srv-dblmkehsrm7s73f2prh0
+MANAGE AI: https://dashboard.render.com/web/srv-dblmkm9srm7s73f2r0gg
+FIND BOTH APPS FROM ANY DEVICE:
+https://github.com/6244abaman/transition-companion/blob/main/LIVE-APPS.md
+
+Everyday use
+Open the app URL on a phone or computer. Reviewers need no Render account.
+Your computer and Claude/Codex can be closed. There is no daily Start step.
+On Windows, Start.cmd is a convenience shortcut to this same hosted app.
+
+Manage the existing services
+1. Sign in at https://dashboard.render.com and choose Momentum Claude.
+2. Open rss-app for the interface; open rss-proxy for the Claude connection.
+3. The app URL is shown on rss-app's service page. Bookmark it or use the
+   public GitHub README/directory above to find it from another device.
+4. Events shows deployment status. Wait for Live before checking an update.
+
+Updates without a coding assistant
+Both existing services are connected to the reserve-soldier-support GitHub
+repository and track main. New commits to main trigger deployments at the
+same addresses. GitHub Actions runs offline tests; changes should be tested
+and reviewed before merging. A new app URL is not required for an update.
+
+For a manual deployment: open the affected service, choose Manual Deploy,
+then Deploy latest commit. Wait for Live and refresh the app. If the update
+changes both frontend and proxy, confirm both services finish deploying.
+Selecting a specific historical commit can disable auto-deploy; use the
+latest-commit option for an ordinary update.
+
+Configuration record
+app-deployment.json records actual service IDs, URLs, branch and commands.
+render.yaml is the existing infrastructure template. Preserve the current
+services; do not create another Blueprint just to start or update this app.
+rss-app publishes ./app and currently uses echo "No build step".
+rss-proxy builds with npm install --prefix proxy and starts node proxy/server.js.
+GitHub CI and Render auto-deployment are currently separate: CI does not block
+the existing Render build commands. The shared delivery workflow tests before
+publishing and checks that the resulting deploy is Live.
+
+If there is a problem
+- Page unavailable: inspect rss-app's latest Events and build logs.
+- Page works but Claude does not reply: inspect rss-proxy's Events and Logs.
+  Its /health endpoint reports ok and ready without exposing the API key.
+- Store or change credentials only under rss-proxy > Environment. Never put
+  an Anthropic API key in the frontend, repository, public link or a chat.
+- Check https://status.render.com/ for platform-wide problems.
+
+Storage and costs
+Profiles are local to the reviewer's browser and this site's address. Keeping
+the same URL preserves that origin across updates. This is not cross-device
+account synchronization. Test with invented examples.
+The app uses the existing static site; the proxy uses its existing paid plan.
+Static hosting bandwidth/build usage and Anthropic calls follow their existing
+billing arrangements. This update adds no paid service or new compute plan.
+
+Official guide: https://render.com/docs/deploys

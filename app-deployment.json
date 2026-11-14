@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "app": "reserve-soldier-support",
+  "repository": "https://github.com/6244abaman/reserve-soldier-support",
+  "deploymentBranch": "main",
+  "publicDirectory": "https://github.com/6244abaman/transition-companion/blob/main/LIVE-APPS.md",
+  "review": {
+    "workspaceName": "Momentum Claude",
+    "workspaceId": "tea-d702h2fkijhs73d5bgtg",
+    "serviceName": "rss-app",
+    "serviceId": "srv-dblmkehsrm7s73f2prh0",
+    "serviceType": "static_site",
+    "url": "https://rss-app-2gwd.onrender.com/",
+    "dashboardUrl": "https://dashboard.render.com/static/srv-dblmkehsrm7s73f2prh0",
+    "autoDeploy": "yes",
+    "buildCommand": "echo \"No build step\"",
+    "publishPath": "./app"
+  },
+  "llm": {
+    "serviceName": "rss-proxy",
+    "serviceId": "srv-dblmkm9srm7s73f2r0gg",
+    "dashboardUrl": "https://dashboard.render.com/web/srv-dblmkm9srm7s73f2r0gg",
+    "url": "https://rss-proxy-jk1u.onrender.com",
+    "buildCommand": "npm install --prefix proxy",
+    "startCommand": "node proxy/server.js"
+  },
+  "windows": {
+    "start": "Start.cmd",
+    "mode": "hosted-app-shortcut",
+    "backgroundServer": false
+  }
+}

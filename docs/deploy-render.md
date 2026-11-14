@@ -1,10 +1,20 @@
 # Putting Momentum on Render
 
+## Existing app: open or update it
+
+The app is already deployed: **[Open Momentum Business Rebuild](https://rss-app-2gwd.onrender.com/)**.
+Use [HOSTING.txt](../HOSTING.txt) for its actual dashboards, branch, automatic
+updates and Manual Deploy steps. There is no daily Start action and no need to
+create another Blueprint. [The public directory](https://github.com/6244abaman/transition-companion/blob/main/LIVE-APPS.md)
+keeps both app links available from any device.
+
+The setup instructions below are for provisioning a separate installation.
+
 Render runs two services from this repository, both set up by `render.yaml`:
 
 | Service | What it is | Cost |
 |---|---|---|
-| `rss-proxy` | The proxy. The only place the Claude API key lives. | Starter plan (paid, about $7 a month; always awake) |
+| `rss-proxy` | The proxy. The only place the Claude API key lives. | Existing paid Starter plan; check Render Billing for current charges |
 | `rss-app` | The app (the `app/` folder) at its own web address. | Free |
 
 Claude itself is paid per message, from your Anthropic account. Set a monthly spending limit there first.

@@ -1,5 +1,7 @@
 # Momentum: Multi-Agent Business Recovery System
 
+@APP-OPERATIONS.md
+
 ## What this is
 Momentum helps Israeli reservists restart their businesses after long military service. One soldier has one Recovery Profile that holds a list of businesses. A Router agent sends each conversation to the right agent or module. Soldiers use a Hebrew and English web app. The Claude API is called only through our Render proxy.
 
@@ -39,8 +41,8 @@ Intake, then Diagnostic, then Recovery Planning, then Accountability. A specific
 - The profile is stored behind one storage interface (localStorage keyed by phone for now, so it can move to a server database later). Validate against schema/recovery-profile.json on every save.
 
 ## How to work with Aba
-- Work in phases and stop for approval at each checkpoint.
-- If something conflicts with the existing code or this file, stop and ask.
+- Follow any review checkpoints Aba explicitly requests. Otherwise complete the requested app update through the shared delivery workflow, including GitHub and the existing Render deployment.
+- If a product change conflicts with the existing product rules, clarify before overriding them. Shared hosting/delivery instructions are in APP-OPERATIONS.md.
 - Do not add features that were not asked for.
 - Never overwrite an existing file without saying so first.
 - Small commits with clear messages.

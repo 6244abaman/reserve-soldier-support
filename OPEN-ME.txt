@@ -1,0 +1,15 @@
+MOMENTUM BUSINESS REBUILD
+
+Windows: double-click Start.cmd. It opens https://rss-app-2gwd.onrender.com/
+in your default browser. Choose English at the top of the app if wanted.
+This shortcut opens the hosted app; it does not start a local server and
+does not need Node, a terminal, Claude or Codex. Close the browser when done.
+No Stop.cmd is needed because there is no local background server.
+
+Any device: open the same web address. Internet is required for the hosted
+app and live Claude answers. Data stays in that browser's local profile as
+described by the app; changing browser/profile/site gives a different store.
+
+For managing Render or publishing updates, read HOSTING.txt.
+To find both apps when away from your computer:
+https://github.com/6244abaman/transition-companion/blob/main/LIVE-APPS.md
