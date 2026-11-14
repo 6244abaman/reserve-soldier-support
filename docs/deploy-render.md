@@ -2,7 +2,8 @@
 
 ## Existing app: open or update it
 
-The app is already deployed: **[Open Momentum Business Rebuild](https://rss-app-2gwd.onrender.com/)**.
+The app is already deployed: **[Open Finance/Miluim — Momentum Business Rebuild](https://rss-app-2gwd.onrender.com/)**.
+In the Momentum Claude Render workspace, Finance/Miluim is the service `rss-app`.
 Use [HOSTING.txt](../HOSTING.txt) for its actual dashboards, branch, automatic
 updates and Manual Deploy steps. There is no daily Start action and no need to
 create another Blueprint. [The public directory](https://github.com/6244abaman/transition-companion/blob/main/LIVE-APPS.md)

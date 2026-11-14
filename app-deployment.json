@@ -1,6 +1,8 @@
 {
   "schemaVersion": 1,
   "app": "reserve-soldier-support",
+  "displayName": "Finance/Miluim — Momentum Business Rebuild",
+  "aliases": ["Finance/Miluim", "Miluim", "Business Rebuild", "rss-app"],
   "repository": "https://github.com/6244abaman/reserve-soldier-support",
   "deploymentBranch": "main",
   "publicDirectory": "https://github.com/6244abaman/transition-companion/blob/main/LIVE-APPS.md",

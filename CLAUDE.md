@@ -1,4 +1,4 @@
-# Momentum: Multi-Agent Business Recovery System
+# Finance/Miluim (Momentum): Multi-Agent Business Recovery System
 
 @APP-OPERATIONS.md
 

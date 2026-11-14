@@ -1,4 +1,4 @@
-MOMENTUM BUSINESS REBUILD - OPEN, SHARE AND UPDATE
+FINANCE/MILUIM - MOMENTUM BUSINESS REBUILD - OPEN, SHARE AND UPDATE
 
 OPEN AND SHARE: https://rss-app-2gwd.onrender.com/
 MANAGE APP: https://dashboard.render.com/static/srv-dblmkehsrm7s73f2prh0
@@ -13,7 +13,8 @@ On Windows, Start.cmd is a convenience shortcut to this same hosted app.
 
 Manage the existing services
 1. Sign in at https://dashboard.render.com and choose Momentum Claude.
-2. Open rss-app for the interface; open rss-proxy for the Claude connection.
+2. Finance/Miluim appears in Render as rss-app. Open that service for the
+   interface; open rss-proxy for the Claude connection.
 3. The app URL is shown on rss-app's service page. Bookmark it or use the
    public GitHub README/directory above to find it from another device.
 4. Events shows deployment status. Wait for Live before checking an update.

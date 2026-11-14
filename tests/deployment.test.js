@@ -4,7 +4,7 @@ const root=path.resolve(__dirname,'..');
 test('public owner links and frontend proxy match the deployment record',()=>{
   const settings=JSON.parse(fs.readFileSync(path.join(root,'app-deployment.json'),'utf8'));
   const publicLinks=JSON.parse(fs.readFileSync(path.join(root,'app/app-links.json'),'utf8'));
-  assert.deepEqual(publicLinks,{app:settings.app,url:settings.review.url,publicDirectory:settings.publicDirectory});
+  assert.deepEqual(publicLinks,{app:settings.app,displayName:settings.displayName,url:settings.review.url,publicDirectory:settings.publicDirectory});
   const context={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'app/js/config.js'),'utf8'),context);
   assert.equal(context.window.MOMENTUM_CONFIG.proxyUrl,settings.llm.url);
   for(const file of ['README.md','HOSTING.txt']){

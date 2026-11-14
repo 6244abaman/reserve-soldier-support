@@ -1,8 +1,12 @@
-# Momentum Business Rebuild
+# Finance/Miluim — Momentum Business Rebuild
 
 **[Open and share the app](https://rss-app-2gwd.onrender.com/)**
 · [Render dashboard](https://dashboard.render.com/static/srv-dblmkehsrm7s73f2prh0)
 · [Permanent links to both apps](https://github.com/6244abaman/transition-companion/blob/main/LIVE-APPS.md)
+
+Finance/Miluim is the reserve/business recovery app in the
+`reserve-soldier-support` repository. Its Render interface service is named
+**`rss-app`**, and its Claude backend is **`rss-proxy`**, in **Momentum Claude**.
 
 Momentum helps Israeli reservists restart their businesses. The browser app
 starts in Hebrew and offers English. Its Claude requests go through the

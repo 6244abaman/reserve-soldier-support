@@ -1,5 +1,10 @@
 # Shared app delivery workflow
 
+The public app name is **Finance/Miluim — Momentum Business Rebuild**.
+It is the existing `reserve-soldier-support` app; its Render service remains
+`rss-app` and its backend remains `rss-proxy`. Preserve this identity mapping
+in owner-facing links so Finance/Miluim is easy to find.
+
 Read `app-deployment.json` for actual GitHub, Render and public access settings.
 The app is https://rss-app-2gwd.onrender.com/ and its dashboard is
 https://dashboard.render.com/static/srv-dblmkehsrm7s73f2prh0.

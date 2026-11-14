@@ -1,4 +1,7 @@
-MOMENTUM BUSINESS REBUILD
+FINANCE/MILUIM - MOMENTUM BUSINESS REBUILD
+
+This is the reserve/business recovery app. In the Momentum Claude Render
+workspace its interface service is rss-app, and its AI service is rss-proxy.
 
 Windows: double-click Start.cmd. It opens https://rss-app-2gwd.onrender.com/
 in your default browser. Choose English at the top of the app if wanted.
